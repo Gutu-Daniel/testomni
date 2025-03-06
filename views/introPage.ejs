@@ -1,0 +1,14 @@
+<% include partials/setup-header %>
+	
+	<!-- SETUP BODY -->
+	<div class="container setup-page">
+		<p class="title"><%= introText.title ? introText.title : '(Insert primary title)' %></p>
+		<p class="sub-title"><%= introText.secondary ? introText.secondary : '(Insert secondary title)' %></p>
+		<p><%= introText.intro_summary ? introText.intro_summary : '(Insert introduction summary of omnilives.com)' %></p>
+		<p><%= introText.mission_summary ? introText.mission_summary : '(Insert mission summary of omnilives.com)' %></p>
+		<p><%= introText.about_summary ? introText.about_summary : '(Insert about summary of omnilives.com)' %></p>
+
+		<a href="/setup" class="btn btn-primary btn-lg float-right">Next</a>
+	</div>
+
+<% include partials/footer %>

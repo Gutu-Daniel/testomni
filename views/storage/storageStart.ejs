@@ -1,0 +1,17 @@
+<% include ./partials/storageHeader %>
+
+<div style="margin-top: 140px;" class="container storage start-page">
+	<p class="title">Online Storage</p>
+	<p class="sub-title">Store and share your files</p>
+	<div>
+		<form action="/storage" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/storageFooter %>

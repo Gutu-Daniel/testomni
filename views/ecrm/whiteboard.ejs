@@ -1,0 +1,24 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include ecrm-partials/navTabs %>
+</div>
+	<div class="whiteboard">
+		<div class="tools-login">
+			<div class="colors">
+				<div class="color white"></i></div>
+		    <div class="color black"></div>
+		    <div class="color red"></div>
+		    <div class="color green"></div>
+		    <div class="color blue"></div>
+		    <div class="color yellow"></div>
+		  </div>
+		  <div class="size">
+		    <label>Brush Size:</label>
+		    <input type="number" id="size" min="1" max="30" placeholder="1 - 30 (default 3)">
+		  </div>
+		</div>
+		<canvas id="myCanvas">Sorry, your browser does not support HTML5 canvas technology.</canvas>
+	</div>
+
+<% include ecrm-partials/ecrmFooter %>

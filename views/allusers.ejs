@@ -1,0 +1,32 @@
+<% include partials/header %>
+<style>
+	 .content {
+      border-radius:15px;
+      background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+color: white;
+padding: 10px;
+    }
+	.smaller-circle p{
+	color: #eee;
+}
+</style>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include ./profile/partials/profile-content-tabs.ejs %>
+
+		<div class="content">
+			<p class="sub-class">All Users<span class="small-text"> (super admin view only)</span></p>
+			<% allUsers.forEach(function(user) { %>
+				<div><span class="small-text">id <%= user.id %>. </span><a href="/profile/<%= user.id %>"><%= user.username%></a><span class="small-text"> user referral code: <%= user.user_code%></span></div>
+			<% }) %>
+		</div>
+	</div>
+</div>
+
+<% include partials/footer %>

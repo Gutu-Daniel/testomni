@@ -1,0 +1,49 @@
+<% include ./partials/interviewHeader %>
+
+<div class="container process page-page">
+	<p id="title">Backoffice</p>
+	<p id="message">Create Page</p>
+	<div class="create-page">
+		<form action="/interview/backoffice/createpage" method="POST">
+			<div class="form-group">
+				<label for="name">Route Name:</label>
+				<input class="form-control" type="text" name="name" placeholder="No whitespace. Letters and numbers only.">
+			</div>
+			<div class="form-group">
+				<label for="accesscode">Accesscode:</label>
+				<input class="form-control" type="text" name="accesscode" placeholder="No whitespace. Letters and numbers only.">
+			</div>
+			<div class="form-group">
+				<label for="accesscode">Accesscode Title:</label>
+				<input class="form-control" type="text" name="accesscode_title">
+			</div>
+			<div class="form-group">
+				<label for="accesscode">Accesscode Summary:</label>
+				<input class="form-control" type="text" name="accesscode_summary">
+			</div>
+			<div class="form-group">
+				<label for="title">Page Title:</label>
+				<input class="form-control" type="text" name="title">
+			</div>
+			<div class="form-group">
+				<label for="summary">Page summary:</label>
+				<textarea class="form-control" type="text" name="summary" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="content">Page Content:</label>
+				<textarea class="form-control" type="text" name="content" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="instruction">Page Instruction:</label>
+				<textarea class="form-control" type="text" name="instruction" rows="4"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="question">Question:</label>
+				<textarea class="form-control" type="text" name="question" rows="4"></textarea>
+			</div>
+			<button class="btn btn-success">Create</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/footer %>

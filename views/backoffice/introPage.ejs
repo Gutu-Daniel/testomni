@@ -1,0 +1,35 @@
+<% include ./backoffice-partials/header.ejs %>
+
+<div id="wrapper">
+	<% include ./backoffice-partials/tabs.ejs %>
+
+	<div style="margin-top: 140px;" class="container">
+		<p class="title">Site Setup</p>
+		<p class="sub-title">Introduction Page</p>
+		<form action="/backoffice/introduction?_method=PUT" method="POST">
+			<div class="form-group">
+				<label for="title">Title:</label>
+				<input class="form-control" type="text" name="title" value="<%= introText.title ? introText.title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="secondary_title">Secondary Title:</label>
+				<input class="form-control" type="text" name="secondary_title" value="<%= introText.secondary_title ? introText.secondary_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="intro_summary">Introduction to Omnilives.com</label>
+				<textarea class="form-control" name="intro_summary"><%= introText.intro_summary ? introText.intro_summary : '' %></textarea>
+			</div>
+			<div class="form-group">
+				<label for="mission_summary">Omnilives.com's Mission</label>
+				<textarea class="form-control" name="mission_summary"><%= introText.mission_summary ? introText.mission_summary : '' %></textarea>
+			</div>
+			<div class="form-group">
+				<label for="about_summary">About Omnilives.com</label>
+				<textarea class="form-control" name="about_summary"><%= introText.about_summary ? introText.about_summary : '' %></textarea>
+			</div>
+			<button class="btn btn-primary">Save</button>
+		</form>
+	</div>
+</div>
+
+<% include ./backoffice-partials/footer.ejs %>

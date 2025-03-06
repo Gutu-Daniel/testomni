@@ -1,0 +1,33 @@
+		<div class="point-cursor" id="feedback-border" data-toggle="modal" data-target="#feedback-form">
+		<p class="small-text">Feedback</p>
+	</div>
+
+	<!-- modal start -->
+	<div class="modal" id="feedback-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+	  	<div class="modal-content">
+	  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+	  		<p>Please provide feedback.</p>
+	  		<p>We will read all suggestions and work to better Omnilives.</p>
+	  		<form action="/feedback/5/user/<%= currentUser.id %>" method="POST">
+					<div class="form-group">
+						<label for="feedback">Your Feedback:</label>
+						<textarea type="text" name="feedback" class="form-control" rows="5"></textarea>
+					</div>
+		  		<button class="btn btn-success">Submit</button>
+		  	</form>
+			</div>
+		</div>
+	</div>
+	<!-- modal end -->
+
+	<script src="/scripts/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+	<script src="/scripts/bootstrap.min.js"></script>
+	<script src="/scripts/moment.min.js"></script>
+	<script src="/scripts/calendar.js"></script>
+	<script src="/scripts/whiteboardNS.js"></script>
+	<script src="/scripts/script.js"></script>
+	<script src="/scripts/ecrmScript.js"></script>
+</body>
+</html>

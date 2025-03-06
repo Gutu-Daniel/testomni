@@ -1,0 +1,537 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+  <hr>
+
+  <div class="content">
+    <p id="title">Dashboard</p>
+
+    <p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+
+    <% if(dashboardInvitations.length){ %>
+    <h3>Invites</h3>
+    <ul>
+      <% dashboardInvitations.forEach(function(t, i) { %>
+      <li><%= t.username %> <a class="text-small btn btn-xs btn-default" href="/onlineoffice/viewUserDashboard/<%= t.id %>" title="View"><i class="fa fa-angle-right" aria-hidden="true"></i></i></a></li>
+      <% }) %>
+    </ul>
+    <% } %>
+
+    <% if(dashboardInvited.length){ %>
+    <h3>Invited</h3>
+    <ul>
+      <% dashboardInvited.forEach(function(t, i) { %>
+      <li><%= t.username %></li>
+      <% }) %>
+    </ul>
+    <% } %>
+
+    <div class="row dashboard">
+<!-- My Tasks Section -->
+<div class="col-sm-5 col-md-5">
+  <div id="task">
+    <p id="add-task" class="float-right point-cursor" data-toggle="modal" data-target="#add-task-form"><i class="fa fa-plus-circle"></i> Add a new task</p>
+    <p class="sub-title">Feedback and Suggestion</p>
+
+    <% if (tasks.length > 0) { %>
+    <ul class="task-list list-group">
+      <% for (var i=0; i<tasks.length; i++) { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <input type="checkbox" class="task-status">
+          <%= tasks[i].title %>
+          <span class="small-text">
+            added: <%= new Date(tasks[i].date_time).toLocaleDateString('en-US', { hour12: false }) %>
+          </span>
+          <p class="task-list-description"><%= tasks[i].description %></p>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonTask<%= tasks[i].id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonTask<%= tasks[i].id %>">
+            <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-task-modal" data-task-id="<%= tasks[i].id %>">
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <% } %>
+    </ul>
+    <% } else { %>
+    <p>You don't have any tasks.</p>
+    <% } %>
+  </div>
+</div>
+      <!-- My Organizations Section -->
+<div class="col-sm-5 col-md-5">
+  <p class="sub-title">My Organizations</p>
+  <ul class="list-group">
+    <% orgs.forEach(function(org) { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><%= org.name %></span>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonOrg<%= org.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonOrg<%= org.id %>">
+            <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-organization-modal" data-org-id="<%= org.id %>">
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    <% }) %>
+    <% if (orgs.length < 1) { %>
+      <li class="list-group-item">No organizations</li>
+    <% } %>
+  </ul>
+</div>
+
+
+
+
+</style>
+<!-- My Contacts Section -->
+<div class="col-sm-5 col-md-5">
+  <p class="sub-title">My Contacts</p>
+  <ul class="list-group">
+    <% contacts.forEach(function(contact) { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><%= contact.name %></span>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonContact<%= contact.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonContact<%= contact.id %>">
+            <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-contact-modal" data-contact-id="<%= contact.id %>">
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    <% }) %>
+    <% if (contacts.length < 1) { %>
+      <li class="list-group-item">Contacts are empty</li>
+    <% } %>
+  </ul>
+</div>
+
+
+
+     <!-- My Appointments Section -->
+<div class="col-sm-5 col-md-5">
+  <p class="sub-title">My Appointments</p>
+  <ul class="list-group">
+    <% events.forEach(function(event) { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><%= event.title %></span>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonEvent<%= event.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonEvent<%= event.id %>">
+            <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-event-modal" data-event-id="<%= event.id %>">
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    <% }) %>
+    <% if (events.length < 1) { %>
+      <li class="list-group-item">No appointments</li>
+    <% } %>
+  </ul>
+</div>
+
+
+
+
+      <!-- My Pipelines Section -->
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Pipelines</p>
+        <ul class="list-group">
+          <% pipelines.forEach(function(pipeline) { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><%= pipeline.title %></span>
+              <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton<%= pipeline.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton<%= pipeline.id %>">
+                  <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-pipeline-modal" data-project-id="<%= pipeline.project_id %>" data-pipeline-id="<%= pipeline.id %>">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </li>
+          <% }) %>
+          <% if (pipelines.length < 1) { %>
+            <li class="list-group-item">No pipelines</li>
+          <% } %>
+        </ul>
+      </div>     
+      
+    <!-- My Messages Section -->
+<div class="col-sm-5 col-md-5">
+  <p class="sub-title">My Messages</p>
+  <ul class="list-group">
+    <% messages.forEach(function(message) { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><%= message.username ? message.username : 'Unknown User' %>: <span class="small-text"><%= message.message %></span></span>
+        <% if (message.id) { %>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonMessage<%= message.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonMessage<%= message.id %>">
+            <button type="button" class="dropdown-item text-danger yy " data-toggle="modal" data-target="#confirm-delete-message-modal" data-message-id="<%= message.id %>">
+              Delete
+            </button>
+          </div>
+        </div>
+        <% } %>
+      </li>
+    <% }) %>
+    <% if (messages.length < 1) { %>
+      <li class="list-group-item">No messages</li>
+    <% } %>
+  </ul>
+</div>
+<!-- Today's Community Tasks Section -->
+<div class="col-sm-5 col-md-5">
+  <p class="sub-title">Today's Community Tasks</p>
+  <ul class="list-group">
+    <% comTasks.reverse().forEach(function(task) { %>
+      <div class="con">
+        <li class="list-group-item flex-grow-1 point-cursor com-tasks <%= task.completed ? 'completed-task' : '' %>" id="<%= task.user_tasks_id %>" data-attribute="<%= task.date %>">
+          <div class="d-flex align-items-center">
+            <input type="checkbox" class="task-status me-2" <%= task.completed ? 'checked' : '' %>> 
+            <span>
+              <span class="task-dates"><%= task.date %></span>
+              <span class="small-text"><%= task.name %> - <%= task.description %></span>
+            </span>
+          </div>
+        </li>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButtonTask<%= task.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonTask<%= task.id %>">
+            <button type="button" class="dropdown-item text-danger delete-button" data-toggle="modal" data-target="#confirm-delete-com-task-modal" data-task-id="<%= task.id %>">
+              <i class="fa fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+    <% if (comTasks.length < 1) { %>
+      <li class="list-group-item">No community tasks</li>
+    <% } %>
+  </ul>
+</div>
+
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal for Tasks -->
+<div class="modal fade" id="confirm-delete-com-task-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteTaskModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this community task?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-com-task-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="add-task-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+      <h3>New Task</h3>
+      <form action="/onlineoffice/addtask" method="POST">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" name="title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea type="text" name="description" class="form-control"></textarea>
+        </div>
+        <button class="btn btn-success margin-0-auto">Save Task</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+      <h3>Invite a user to your task grid</h3>
+      <form action="/onlineoffice/dashboard/invite" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" class="form-control">
+        </div>
+        <button class="btn btn-success">Invite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-pipeline-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeletePipelineModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeletePipelineModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this pipeline?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-pipeline-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+ <!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-organization-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteOrganizationModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteOrganizationModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this organization?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-organization-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+ <!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-contact-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteContactModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this contact?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-contact-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-event-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteEventModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this event?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-event-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-message-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteMessageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteMessageModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this message?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-message-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-task-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteTaskModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this task?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="delete-task-form" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal End -->
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    $('#confirm-delete-pipeline-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var projectId = button.data('project-id');
+      var pipelineId = button.data('pipeline-id');
+      var form = document.getElementById('delete-pipeline-form');
+      form.action = '/onlineoffice/project/' + projectId + '/pipeline/' + pipelineId + '?_method=DELETE';
+    });
+    $('#confirm-delete-organization-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var orgId = button.data('org-id');
+      var form = document.getElementById('delete-organization-form');
+      form.action = '/onlineoffice/organization/' + orgId + '?_method=DELETE';
+    });
+    $('#confirm-delete-contact-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var contactId = button.data('contact-id');
+      var form = document.getElementById('delete-contact-form');
+      form.action = '/onlineoffice/deletecontact/' + contactId + '?_method=DELETE';
+    });
+    $('#confirm-delete-event-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var eventId = button.data('event-id');
+      var form = document.getElementById('delete-event-form');
+      form.action = '/onlineoffice/deleteevent/' + eventId + '?_method=DELETE';
+    });
+    $('#confirm-delete-message-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var messageId = button.data('message-id');
+      var form = document.getElementById('delete-message-form');
+      form.action = '/onlineoffice/deletemessage/' + messageId + '?_method=DELETE';
+    });
+    $('#confirm-delete-task-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var taskId = button.data('task-id');
+      var form = document.getElementById('delete-task-form');
+      form.action = '/onlineoffice/deletetask/' + taskId + '?_method=DELETE';
+      event.stopPropagation(); // Prevent bubbling
+       // Force re-render to ensure Safari updates:
+  form.offsetHeight; // Trigger reflow
+    });
+    $('#confirm-delete-com-task-modal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var taskId = button.data('task-id');
+      var form = document.getElementById('delete-com-task-form');
+      form.action = '/comTasks/' + taskId + '?_method=DELETE';
+    });
+  });
+</script>
+
+<style>
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dropdown-menu-right {
+    right: 0;
+    left: auto;
+  }
+  .task-list-description {
+    margin-top: 5px;
+  }
+  .delete-button {
+    color: #dc3545;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  .delete-button i {
+    margin-right: 5px;
+  }
+  .delete-button:hover {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .con {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid #e9ecef;
+  }
+</style>

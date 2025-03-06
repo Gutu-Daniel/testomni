@@ -1,0 +1,13 @@
+<% include ./partials/interviewHeader %>
+
+<div class="container process page-page">
+	<p id="title">Backoffice</p>
+	<p id="message">Current Pages</p>
+	<div>
+		<% for (var i=0;i<pagesInfo.length;i++) { -%>
+			<p><a href="/interview/backoffice/<%= pagesInfo[i].name %>"><%= pagesInfo[i].name %></a></p>
+		<% } -%>
+	</div>
+</div>
+
+<% include ./partials/footer %>

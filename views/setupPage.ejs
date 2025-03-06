@@ -1,0 +1,58 @@
+<% include partials/setup-header %>
+	
+	<!-- SETUP BODY -->
+	<div class="container setup-page">
+		<p class="title"><%= setupText.title ? setupText.title : '(Insert primary title)' %></p>
+		<p class="sub-title"><%= setupText.secondary_title ? setupText.secondary_title : '(Insert secondary title)' %></p>
+		<p><%= setupText.steps_summary ? setupText.steps_summary : '(Insert Summary of steps)' %></p>
+		<!-- Step 1 -->
+		<div class="row steps">
+			<div class="col-sm-6 col-md-6">
+				<p><%= setupText.step1_title ? setupText.step1_title : '(Insert step 1)' %></p>
+				<p><%= setupText.step1_description ? setupText.step1_description : '(Insert step 1 description)' %></p>
+			</div>
+			<!-- Steps Photo-->
+			<div class="col-sm-6 col-md-6">
+				<p class="small-text">This is where you input the app code</p>
+				<img src="/images/setup-imgs/app-code.png" alt="app code image">
+			</div>
+		</div>
+		<!-- Step 2 -->
+		<div class="row steps">
+			<div class="col-sm-6 col-md-6">
+				<p><%= setupText.step2_title ? setupText.step2_title : '(Insert step 2)' %></p>
+				<p><%= setupText.step2_description ? setupText.step2_description : '(Insert step 2 description)' %></p>
+			</div>
+			<!-- Steps Photo-->
+			<div class="col-sm-6 col-md-6">
+				<p class="small-text">Where you will enter your application referrer's code</p>
+				<img src="/images/setup-imgs/referral-code.png" alt="referral code image">
+			</div>
+		</div>
+		<!-- Step 3 -->
+		<div class="row steps">
+			<div class="col-sm-6 col-md-6">
+				<p><%= setupText.step3_title ? setupText.step3_title : '(Insert step 3)' %></p>
+				<p><%= setupText.step3_description ? setupText.step3_description : '(Insert step 3 description)' %></p>
+			</div>
+			<!-- Steps Photo-->
+			<div class="col-sm-6 col-md-6">
+				<p>(Insert step 3 photo)</p>
+			</div>
+		</div>
+		<!-- Step 4 -->
+		<div class="row steps">
+			<div class="col-sm-6 col-md-6">
+				<p><%= setupText.step4_title ? setupText.step4_title : '(Insert step 4)' %></p>
+				<p><%= setupText.step4_description ? setupText.step4_description : '(Insert step 4 description)' %></p>
+			</div>
+			<!-- Steps Photo-->
+			<div class="col-sm-6 col-md-6">
+				<p>(Insert step 4 photo)</p>
+			</div>
+		</div>
+		<a href="/" class="btn btn-default btn-lg">Skip to Main Site</a>
+		<a href="/" class="btn btn-primary btn-lg float-right">Done</a>
+	</div>
+
+<% include partials/footer %>

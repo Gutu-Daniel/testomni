@@ -1,0 +1,35 @@
+<% include ./partials/processHeader %>
+
+<div style="margin-top: 140px;" class="container process multiplechoice-page">
+	<p id="title"></p>
+	<p id="message"><%= codeInfo.mc_question %></p>
+	<div>
+		<form action="/opportunity/multiplechoice/<%= codeInfo.name %>" method="POST">
+			<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="radio" name="multiplechoice" value="a">
+							<%= codeInfo.a %>
+						</div>
+						<div class="form-group">
+							<input type="radio" name="multiplechoice" value="b">
+							<%= codeInfo.b %>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="radio" name="multiplechoice" value="c">
+							<%= codeInfo.c %>
+						</div>
+						<div class="form-group">
+							<input type="radio" name="multiplechoice" value="d">
+							<%= codeInfo.d %>
+						</div>
+					</div>
+				</div>
+			<button class="btn btn-success margin-0-auto">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/processFooter %>

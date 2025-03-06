@@ -1,0 +1,64 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include ecrm-partials/navTabs %>
+	<hr>
+	<a href="/office/contacts" class="float-right"> << Return to Full List Contacts</a>
+	<p><span id="title"><%= contact.name %></span> Status: <span class="each-contact-status"><%= contact.status %></span> <%= contact.priority %></p>
+	<p><%= contact.company_title %> <span class="small-text">at</span> <%= contact.company_name %></p>
+	<form action="/office/deletecontact/<%= contact.id %>?_method=DELETE" method="POST">
+		<button class="btn btn-danger btn-sm float-right" >Delete Contact</button>
+	</form>
+	<button><i class="fa fa-envelope-o" aria-hidden="true"></i> <%= contact.email %></button> <button><i class="fa fa-phone" aria-hidden="true"></i> <%= contact.phone %></button>
+
+	<div class="row contact-info">
+		<div class="col-md-3">
+			<h4>Contact Info</h4>
+			<ul>
+				<li>
+					<div class="each-contact-label">Email</div>
+					<%= contact.email %>
+				</li>
+				<li>
+					<div class="each-contact-label">Phone</div>
+					<%= contact.phone %>
+				</li>
+				<li>
+					<div class="each-contact-label">Address</div>
+					<%= contact.address_street %> <br>
+					<%= contact.address_city %>, <%= contact.address_state %> <%= contact.address_zip %> <br>
+					<%= contact.address_country %>
+				</li>
+				<li>
+					<div class="each-contact-label">Website</div>
+					<%= contact.website %>
+				</li>
+				<li>
+					<div class="each-contact-label">Title</div>
+					<%= contact.company_title %>
+				</li>
+				<li>
+					<div class="each-contact-label">Birthday</div>
+					<%= contact.birthday %>
+				</li>
+				<li>
+					<div class="each-contact-label">Background Info</div>
+					<%= contact.background_info %>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-9">
+			<h4>Activity Feed</h4>
+			<form action="">
+				<div class="form-group">
+					<textarea name="note" class="form-control" placeholder="Enter a note about <%= contact.name %>"></textarea>
+				</div>
+				<button class="btn btn-success">Save Note</button>
+			</form>
+			<hr>
+			<%= currentDate %>
+		</div>
+	</div>
+</div>
+
+<% include ecrm-partials/ecrmFooter %>

@@ -1,0 +1,17 @@
+<% include ./partials/interviewHeader %>
+
+<div class="container process start-page">
+	<p id="title">Welcome to the interview process</p>
+	<p id="message">We appriciate your cooperation</p>
+	<div>
+		<form action="/interview" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/footer %>

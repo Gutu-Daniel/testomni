@@ -1,0 +1,21 @@
+<% include partials/header %>
+
+<div class="container blog page">
+  <% include ../profile/partials/profile-content-tabs.ejs %>
+  <div>
+    <p class="title">Write a Blog</p>
+    <form action="/blog/<%= currentUser.id %>" method="POST">
+      <div class="form-group">
+        <input type="text" name="title" class="form-control" placeholder="Title of Post">
+      </div>
+      <div class="form-group">
+        <textarea name="body" class="form-control" rows="10" placeholder="Blog Post"></textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-default">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% include partials/footer %>

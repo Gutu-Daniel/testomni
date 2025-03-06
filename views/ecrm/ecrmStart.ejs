@@ -1,0 +1,17 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm start-page">
+	<p id="title">Office</p>
+	<p id="message">Organize your enterprise business!</p>
+	<div>
+		<form action="/office" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ecrm-partials/ecrmFooter %>

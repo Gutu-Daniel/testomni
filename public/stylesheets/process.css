@@ -1,0 +1,66 @@
+.process {
+	margin: 2% auto;
+	text-align: center;
+}
+
+.multiplechoice-page {
+	text-align: left;
+}
+.start-page, .accesscode-page, .multiplechoice-page {
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 15px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	padding: 15px;
+	margin-top: 8%;
+	width: 50%;
+	color: #fff;
+}
+.page-page {
+	width: 60%;
+}
+.start-page input, .accesscode-page input, .multiplechoice-page input {
+	margin: 0 auto;
+	width: 30%;
+}
+#title {
+	font-size: 2.25em;
+}
+#message {
+	font-size: 1.5em;
+}
+.sub-title {
+	font-size: 1.75rem;
+}
+.user-qna textarea, .create-page textarea, .create-page input {
+	width: 70%;
+	margin: 0 auto;
+}
+.process-page-image, .process-page-video, .process-page-audio {
+	width: 50%;
+	padding: 1rem 0;
+}
+#instructions {
+	position: fixed;
+	float: left;
+	width: 16%;
+	padding: 1%;
+	top: 5rem;
+	bottom: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+#instruction-text {
+	display: none;
+}
+#instruction-handler {
+	position: fixed;
+	bottom: 1rem;
+	left: 1.5rem;
+	z-index: 1000;
+	background: #fff;
+	border: 1px solid #d4d4d4;
+	padding: 1rem 1rem 0 1rem;
+}

@@ -1,0 +1,36 @@
+<% include partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include partials/content-tabs.ejs %>
+
+		<div class="content-tabs">
+			<a href="/transfer"><div class="semi-circle"><p>Transfer</p></div></a>
+			<a href="/public-ledger/<%= userInfo[0].user_id %>"><div class="semi-circle"><p>Public Ledger</p></div></a>
+			<a href="/personal-ledger/<%= userInfo[0].user_id %>"><div class="semi-circle"><p>Personal Ledger</p></div></a>
+			<div class="semi-circle"><p>Placeholder</p></div>
+			<div class="semi-circle"><p>Placeholder</p></div>
+			<div class="semi-circle"><p>Placeholder</p></div>
+		</div>
+		<div class="content">
+			<div class="transfer">
+				<h1>Transfer Points</h1>
+				<p><%= currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) %>'s Current Balance: <span id="amount"><%= amount %></span> Points</p>
+				<form action="/transfer" method="POST">
+					<div class="form-group">
+						<label for="receiver">To:</label>
+						<input type="text" name="receiver" class="form-control" placeholder="Enter Username" required oninvalid="this.setCustomValidity('Please enter a username')" oninput="setCustomValidity('')">
+					</div>
+					<div class="form-group">
+						<label for="transfer_amount">Amount:</label>
+						<input type="number" name="transfer_amount" class="form-control" placeholder="Enter Amount" required oninvalid="this.setCustomValidity('Please enter a number')" oninput="setCustomValidity('')">
+					</div>
+					<button class="btn btn-default">Transfer</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include partials/footer %>

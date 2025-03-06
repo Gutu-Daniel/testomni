@@ -1,0 +1,84 @@
+<% include ./partials/header %>
+<style>
+
+.browser-conatiner{
+    margin-top: 140px;
+}
+.browser-conatiner h1,h2{
+    color: white;
+}
+</style>
+    <div class="browser-conatiner">
+        <h1>Download Our Desktop Bowser</h1>
+        <h2>Select your OS type</h2>
+        <div class="os-container">
+            <div class=" circle hover-cursor-pointer" onclick="downloadFile('desktop', 'windows')">
+                <p>Windows</p>
+            </div>
+            <div class="circle hover-cursor-pointer" onclick="downloadFile('desktop', 'mac')">
+                <p>Mac</p>
+            </div>
+            <div class="circle hover-cursor-pointer" onclick="downloadFile('desktop', 'linux')">
+                <p>Linux</p>
+            </div>
+        </div>
+
+        <h1>Download Our Mobile App</h1>
+        <h2>Select your OS type</h2>
+        <div class="os-container">
+            <div class="circle hover-cursor-pointer" onclick="downloadFile('mobile', 'android')">
+                <p>Android</p>
+            </div>
+            
+        </div>
+        
+    
+        <% include partials/footer %>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                padding: 20px;
+            }
+    
+            .os-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+                justify-items: center;
+                margin: 20px 0;
+         }
+            .hover-cursor-pointer:hover {
+                cursor: pointer;
+            }
+            .os-option {
+                margin: 0 15px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+    
+            .os-option:hover {
+                background-color: #f0f0f0;
+            }
+        </style>
+    <script>
+        function downloadFile(deviceType, osType) {
+            const fileUrls = {
+                desktop: {
+                    windows: '/downloads/desktop/omni-windows-browser.exe',
+                    mac: '/downloads/desktop/omni-mac-browser.dmg',
+                    linux: '/downloads/desktop/omni-linux-browser.AppImage'
+                },
+                mobile: {
+                    android: '/downloads/mobile/Omni.apk',
+                    ios: '/downloads/mobile/ios-browser.ipa'
+                }
+            };
+
+            const url = fileUrls[deviceType][osType];
+            window.location.href = url;
+        }
+    </script>
+    </div>

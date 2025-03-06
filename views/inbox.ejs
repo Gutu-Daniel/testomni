@@ -1,0 +1,81 @@
+<% include ./partials/header %>
+
+<div class="container">
+	<p class="title">Inbox</p>
+
+	<span class="point-cursor float-right" data-toggle="modal" data-target="#send-message-form"><i class="fa fa-comment-o"></i> Send Message</span>
+	<% if (messages.length) { -%>
+		<p class="sub-title">Your messages</p>
+		<div>
+			<div class="row message-header">
+				<div class="col-xs-2 col-sm-2 col-md-2">
+					<p>Sender</p>
+				</div>
+				<div class="col-xs-7 col-sm-7 col-md-7">
+					<p>Message</p>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2">
+					<p>Sent on</p>
+				</div>
+				<div class="col-xs-1 col-sm-1 col-md-1">
+					<p>Delete</p>
+				</div>
+			</div>
+			<% messages.forEach(function(msg) { %>
+				<div class="row each-message">
+					<div class="col-xs-2 col-sm-2 col-md-2">
+						<p><%= msg.username %></p>
+					</div>
+					<div class="col-xs-7 col-sm-7 col-md-7">
+						<p class="message-content align-left"><%= msg.message %></p>
+					</div>
+					<div class="col-xs-2 col-sm-2 col-md-2">
+						<p><%= msg.date %> - <%= msg.time %></p>
+					</div>
+					<div class="col-xs-1 col-sm-1 col-md-1">
+						<button data-toggle="modal" data-target="#delete-message-form-<%= msg.message_id %>" class="remove-btn-design">X</button>
+						<!-- modal start -->
+						<div class="modal" id="delete-message-form-<%= msg.message_id %>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+						  	<div class="modal-content">
+						  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+						  		<p>Are you sure you want to delete <%= msg.username%>'s message?</p>
+						  		<form action="/inbox/<%= msg.message_id %>?_method=DELETE" method="POST">
+										<button class="btn btn-danger">Delete</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- modal end -->
+					</div>
+				</div>
+			<% }) %>
+		</div>
+	<% } else { %>
+		<p>No messages</p>
+	<% } -%>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="send-message-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<p class="sub-title">Send a message</p>
+  		<form action="/inbox" method="POST">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="username">Message</label>
+					<textarea type="text" name="message" class="form-control"></textarea>
+				</div>
+	  		<button class="btn btn-success">Send</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include ./partials/footer %>

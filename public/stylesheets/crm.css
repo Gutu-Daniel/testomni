@@ -1,0 +1,399 @@
+.crm {
+  margin: 2% auto;
+}
+
+.start-page {
+  margin-top: 8%;
+  width: 50%;
+  text-align: center;
+}
+
+.start-page input {
+  margin: 0 auto;
+  width: 30%;
+}
+
+.home {
+  text-align: center;
+}
+
+#home-tabs a,
+#nav-tabs a {
+  color: #000;
+  text-decoration: none;
+}
+
+#title {
+  font-size: 2.25em;
+}
+
+.sub-title {
+  font-size: 1.5em;
+}
+
+.small-text {
+  font-size: .7em;
+}
+
+.home-icons {
+  border-color: #d4d4d4;
+  padding-top: 3.3rem;
+}
+
+#profile-img {
+  height: 110px;
+  width: 110px;
+  border: none;
+}
+
+#tabs .smallest-circle,
+#home-tabs .smaller-circle {
+  border-color: #d4d4d4;
+}
+
+#tabs {
+  width: auto;
+  height: 180px;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+#tabs>a {
+  display: inline-block;
+  padding-right: 0.55%;
+}
+
+#close-sub-profiles {
+  height: 100px;
+}
+
+#close-sub-profiles:before {
+  content: "";
+  position: absolute;
+  display: block;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  transform: rotate(45deg);
+}
+
+#close-sub-profiles:after {
+  content: "";
+  position: absolute;
+  display: block;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  transform: rotate(-45deg);
+}
+
+#close-modal-form {
+  border-radius: 9px;
+  padding: 1px 10px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.crm ul {
+  list-style: none;
+  padding: 0;
+}
+
+/*Dashboard*/
+.dashboard>div {
+  height: 175px;
+  overflow-y: auto;
+  border: 1px solid #d4d4d4;
+  margin: 1rem 3rem;
+  padding: 1rem 2rem;
+}
+
+/*Calendar*/
+.day-number {
+  cursor: pointer;
+}
+
+.event-list {
+  padding: 7%;
+}
+
+#date-selected {
+  border: none;
+  outline: none;
+  resize: none;
+  width: 163px;
+}
+
+.completed-task {
+  color: #959595;
+  text-decoration: line-through;
+}
+
+.testing {
+  background: #1fd31f;
+}
+
+/*Inbox*/
+.each-message {
+  border: 1px solid #d4d4d4;
+  padding: 1%;
+}
+
+/*Contacts*/
+.each-list {
+  border: 1px solid #d4d4d4;
+  padding: 1%;
+}
+
+.each-list:nth-child(even) {
+  background: #d4d4d4;
+}
+
+.active-status {
+  color: rgb(97, 160, 74);
+  font-weight: 600;
+}
+
+.inactive-status {
+  color: rgb(187, 75, 69);
+  font-weight: 600;
+}
+
+/*Each Contact*/
+.contact-info {
+  margin: 1% 0;
+}
+
+.contact-info>div:nth-child(1),
+.contact-info>div:nth-child(3) {
+  border: 1px solid #d4d4d4;
+}
+
+.active-status {
+  color: rgb(97, 160, 74);
+  font-weight: 600;
+}
+
+.inactive-status {
+  color: rgb(187, 75, 69);
+  font-weight: 600;
+}
+
+.each-contact-label {
+  font-size: 1.1rem;
+  color: #8c8c8c;
+}
+
+/*Org*/
+.org-padding{
+  padding-top: 7.5rem;
+  cursor: default;
+}
+.org>div {
+  display: none;
+}
+
+.inner-circle.one {
+  margin-top: -1rem;
+  margin-left: 1rem;
+}
+
+.inner-circle.two {
+  margin-top: -6rem;
+}
+
+.inner-circle.three {
+  margin-top: -1rem;
+  margin-left: -1rem;
+}
+
+.inner-circle.four {
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.inner-circle.five {
+  margin-top: 6rem
+}
+
+.inner-circle.six {
+  margin-top: 2rem;
+  margin-left: -1rem;
+}
+
+.inner-circle.seven {
+  position: absolute;
+  margin-top: 3.3rem;
+  margin-left: 11.7rem;
+}
+
+#create-downline,
+#edit-downline {
+  display: none;
+  width: 70%;
+  padding: 2rem;
+}
+
+#about-candidate-form>.modal-dialog,
+#about-candidate>.modal-dialog {
+  margin-top: 5rem;
+  width: 70%;
+}
+
+/*.position {
+  display: none;
+}
+#sh {
+  display: block;
+}*/
+
+#select-position {
+  background: #fff;
+  height: 3rem;
+  width: 22rem;
+  font-size: 1.3rem;
+}
+
+/*PROJECT*/
+.pipeline-btn {
+  margin-top: 1rem;
+}
+
+/*COMMUNITY TASK GRID*/
+.task-grid>div {
+  margin: 1rem auto;
+  padding: 0;
+}
+
+.each-task {
+  border: 1px solid black;
+  padding: 1rem;
+  height: 50px;
+}
+
+.grid-right {
+  overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.each-task-date {
+  width: 100px;
+  padding: 1.5rem;
+  height: 50px;
+  border: 1px solid black;
+}
+
+.each-task-status {
+  text-align: center;
+  width: 100px;
+  padding: 1rem;
+  height: 50px;
+  border: 1px solid black;
+}
+
+.each-task-cell {
+  text-align: center;
+}
+
+.delete-btn{
+  visibility: hidden;
+  background-color: transparent;
+  border: 0;
+}
+
+.project-list-each:hover .delete-btn{
+  visibility: visible;
+}
+
+.task-checkbox{
+  height: 1.5em;
+  width: 1.5em;
+}
+
+/*STORAGE*/
+.storage-files {
+  width: 200px;
+  height: 200px;
+}
+
+/*VOICEMAIL*/
+.voicemail-files {
+  border: 1px solid #d4d4d4;
+  width: 250px;
+  height: 250px;
+}
+
+/* WALL */
+.wall-video {
+  width: 500px;
+}
+
+
+@media (min-width: 668px) and (max-width: 1024px) {
+  .inner-circle.seven {
+    margin-top: 2.4rem;
+    margin-left: 10.4rem;
+  }
+
+  #profile-img {
+    height: 90px;
+    width: 90px;
+  }
+}
+
+@media screen and (max-width: 667px) {
+  .org-padding{
+    padding-top: 6.7rem;
+    cursor: default;
+  }
+
+  .inner-circle.seven {
+    margin-top: 2.1rem;
+    margin-left: 9.4rem;
+  }
+
+  .each-task-date {
+    padding-left: 0;
+    width: 50px;
+  }
+
+  .each-task-status {
+    width: 50px;
+  }
+
+  #profile-img {
+    height: 65px;
+    width: 65px;
+  }
+
+  #close-sub-profiles {
+    height: 60px;
+  }
+}
+
+@media screen and (max-width: 667px) {
+  .org-padding{
+    padding-top: 6.7rem;
+    cursor: default;
+  }
+
+  img.profile-img.content-page {
+    margin-left: -1.2rem;
+  }
+
+  .wall-video {
+    width: 250px;
+  }
+}

@@ -1,0 +1,307 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include ecrm-partials/navTabs %>
+  <hr>
+  <p id="title">Projects</p>
+  <div class="dropdown float-right">
+    <button class="" type="button" id="addDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <p id="add-project" class="float-right point-cursor"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</p>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right text-center custom-dropdown" aria-labelledby="addDropdown">
+      <div class="row">
+        <div class="col-12">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-project-form">Project</a>
+        </div>
+        <div class="col-12">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-pipeline-form">Pipeline</a>
+        </div>
+        <div class="col-12">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-candidate-form">Candidate</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="project-list mt-4">
+    <h4>Projects</h4>
+    <% if (projects.length > 0) { %>
+      <% for (var i = 0; i < projects.length; i++) { %>
+        <div class="mb-3 d-flex justify-content-between">
+          <!-- Title and Add Icon Side by Side -->
+          <div class="d-flex align-items-center">
+            <!-- Project Title -->
+            
+            <!-- Dropdown Toggle with Plus Icon -->
+            <div class="dropdown ml-2">
+              <a href="/office/project/<%= projects[i].project_id %>" class=""><%= projects[i].title %></a>
+
+              <button class="btn btn-link p-0 m-0 dropdown-toggle" type="button" id="dropdownMenuButton<%= i %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-plus-circle text-primary" aria-hidden="true"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-left text-center custom-dropdown" aria-labelledby="dropdownMenuButton<%= i %>">
+                <div class="row">
+                  <div class="col-12">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-project-form" data-project-id="<%= projects[i].project_id %>">Project</a>
+                  </div>
+                  <div class="col-12">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-pipeline-form" data-project-id="<%= projects[i].project_id %>">Pipeline</a>
+                  </div>
+                  <div class="col-12">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-candidate-form" data-project-id="<%= projects[i].project_id %>">Candidate</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } else { %>
+      <p>You don't have any projects</p>
+    <% } %>
+  </div>
+  
+  
+  
+</div>
+
+<!-- Add Project Modal -->
+<div class="modal fade" id="add-project-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">New Project</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/office/createproject" method="POST">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Select Parent Project</label>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="parent_project_id" id="noParent" value="" checked>
+                  <label class="form-check-label" for="noParent">
+                    New Project
+                  </label>
+                </div>
+              </div>
+              <% projects.forEach(function(project) { %>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="parent_project_id" id="project<%= project.project_id %>" value="<%= project.project_id %>">
+                    <label class="form-check-label" for="project<%= project.project_id %>">
+                      <%= project.title %>
+                    </label>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+          <button class="btn btn-success mt-3">Create Project</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Project Modal End -->
+
+<!-- Add Pipeline Modal -->
+<div class="modal fade" id="add-pipeline-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">New Pipeline</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="pipeline-form" method="POST">
+          <div class="form-group">
+            <label for="pipeline-title">Pipeline Name</label>
+            <input type="text" name="title" class="form-control" id="pipeline-title" required>
+          </div>
+          <div class="form-group">
+            <label>Select Project</label>
+            <div class="row">
+              <% projects.forEach(function(project, index) { %>
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="project_id" id="project<%= project.project_id %>" value="<%= project.project_id %>" <%= index === 0 ? 'checked' : '' %>>
+                    <label class="form-check-label" for="project<%= project.project_id %>">
+                      <%= project.title %>
+                    </label>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+          <button class="btn btn-success mt-3">Create Pipeline</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Pipeline Modal End -->
+
+<!-- Add Candidate Modal -->
+<div class="modal fade" id="add-candidate-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">New Candidate</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="candidate-form" method="POST">
+
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" id="username" required>
+          </div>
+          <div class="form-group">
+            <label>Select Pipeline</label>
+            <div class="row" id="pipeline-options">
+              <!-- Pipeline options will be dynamically inserted here -->
+            </div>
+          </div>
+          <button class="btn btn-success mt-3">Create Candidate</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Candidate Modal End -->
+
+<% include ecrm-partials/ecrmFooter %>
+
+<style>
+  .custom-dropdown {
+    width: 200px; /* Adjust the width as needed */
+    margin-right: 10px;
+  }
+  .dropdown-menu {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+  }
+  .dropdown-item {
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  .dropdown-item:hover {
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ensure projects variable is available in the script
+    var projects = <%- JSON.stringify(projects) %>;
+
+    // Add project ID to the modals when dropdown items are clicked
+    $('#add-pipeline-form').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var projectId = button.data('project-id');
+      var modal = $(this);
+      if (projectId) {
+        modal.find('input[name="project_id"][value="' + projectId + '"]').prop('checked', true);
+        $('#pipeline-form').attr('action', '/office/project/' + projectId + '/createpipeline');
+      } else {
+        modal.find('input[name="project_id"]').first().prop('checked', true);
+        var firstProjectId = modal.find('input[name="project_id"]').first().val();
+        $('#pipeline-form').attr('action', '/office/project/' + firstProjectId + '/createpipeline');
+      }
+    });
+
+    $('#add-candidate-form').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var projectId = button.data('project-id');
+      var modal = $(this);
+      var pipelineOptions = $('#pipeline-options');
+      pipelineOptions.empty(); // Clear previous options
+
+      if (projectId) {
+        // Show pipelines for the selected project
+        var project = projects.find(p => p.project_id == projectId);
+        if (project && project.pipelines && project.pipelines.length > 0) {
+          project.pipelines.forEach(function(pipeline) {
+            pipelineOptions.append(`
+              <div class="col-12 col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="pipeline_id" id="pipeline${pipeline.id}" value="${pipeline.id}" data-project-id="${project.project_id}" required>
+                  <label class="form-check-label" for="pipeline${pipeline.id}">
+                    ${pipeline.title} (Project: ${project.title})
+                  </label>
+                </div>
+              </div>
+            `);
+          });
+          $('#candidate-form').attr('action', '/office/project/' + projectId + '/pipeline/' + project.pipelines[0].id + '/invite');
+        } else {
+          pipelineOptions.append('<p>No pipelines available for this project.</p>');
+          $('#candidate-form').attr('action', '/office/project/' + projectId + '/invite');
+        }
+      } else {
+        // Show all pipelines
+        var hasPipelines = false;
+        projects.forEach(function(project) {
+          if (project.pipelines && project.pipelines.length > 0) {
+            hasPipelines = true;
+            project.pipelines.forEach(function(pipeline) {
+              pipelineOptions.append(`
+                <div class="col-12 col-md-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="pipeline_id" id="pipeline${pipeline.id}" value="${pipeline.id}" data-project-id="${project.project_id}" required>
+                    <label class="form-check-label" for="pipeline${pipeline.id}">
+                      ${pipeline.title} (Project: ${project.title})
+                    </label>
+                  </div>
+                </div>
+              `);
+            });
+          }
+        });
+        if (hasPipelines) {
+          var firstPipeline = projects.find(p => p.pipelines && p.pipelines.length > 0).pipelines[0];
+          $('#candidate-form').attr('action', '/office/project/' + firstPipeline.project_id + '/pipeline/' + firstPipeline.id + '/invite');
+        } else {
+          pipelineOptions.append('<p>No pipelines available.</p>');
+          $('#candidate-form').attr('action', '/office/project/' + projects[0].project_id + '/invite');
+        }
+      }
+    });
+
+
+    $('#add-project-form').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var projectId = button.data('project-id');
+      var modal = $(this);
+      if (projectId) {
+        modal.find('input[name="parent_project_id"][value="' + projectId + '"]').prop('checked', true);
+      } else {
+        modal.find('input[name="parent_project_id"][value=""]').prop('checked', true);
+      }
+    });
+
+    // Update the candidate form action based on selected pipeline
+
+    $('#candidate-form').on('change', 'input[name="pipeline_id"]', function() {
+      var pipelineId = $(this).val();
+      var projectId = $(this).data('project-id');
+      if (pipelineId) {
+        $('#candidate-form').attr('action', '/office/project/' + projectId + '/pipeline/' + pipelineId + '/invite');
+      } else {
+        $('#candidate-form').attr('action', '/office/project/' + projectId + '/invite');
+      }
+    });
+  });
+</script>

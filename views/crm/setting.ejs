@@ -1,0 +1,43 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include crm-partials/navTabs %>
+	<hr>
+	<p id="title">Settings</p>
+	<span class="point-cursor" data-toggle="modal" data-target="#send-invite-form"><i class="fa fa-plus-circle"></i> Send an invite to a user</span>
+	<div>
+		<p class="sub-title align-center">Online office keys</p>
+		<div class="form-group">
+			<input class="form-control app-keys" type="text" value="4" readonly>
+		</div>
+	</div>
+	<div>
+		<p class="sub-title align-center">Your user referral code</p>
+		<input class="form-control user-keys" type="text" value="<%= currentUser.user_code%>" readonly>
+	</div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="send-invite-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<p class="title">Invite User to Online Office</p>
+  		<p>Please enter the user's username you wish to invite</p>
+  		<form action="/onlineoffice/invite %>" method="POST">
+				<div class="form-group">
+					<label for="username">Friend's Username</label>
+					<input type="text" name="username" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label for="message">Message(optional)</label>
+					<textarea name="message" class="form-control"></textarea>
+				</div>
+	  		<button class="btn btn-success">Send Invite</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

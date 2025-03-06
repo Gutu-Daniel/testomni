@@ -1,0 +1,162 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container storage">
+    <% include crm-partials/navTabs %>
+    <hr>
+    <% if(!storageInfo.length) { %>
+        <p class="title"><%= storageInfo[0].first_name.charAt(0).toUpperCase() + storageInfo[0].first_name.slice(1) %>'s Storage</p>
+    <% }else{ %>
+        <p class="title"></p>
+    <% } %>
+    <div>
+        <% if (isLeader) { %>
+            <p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+        <% } %>
+         
+        <div>
+            <p>Current Users</p>
+            <ul>
+                <li><%= storageInfo[0].username %> <span class="small-text">owner</span></li>
+                <% usersInStorage.forEach(function(user) { %>
+                    <% if (storageInfo[0].owner_id == currentUser.id) { -%>
+                        <li><%= user.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= user.user_id%>">x</button></li>
+                    <% } else { -%>
+                        <li><%= user.username %></li>
+                    <% } -%>
+                    <!-- modal start -->
+                    <div class="modal" id="remove-user-form-<%= user.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+                                <p class="sub-title">Are you sure you want to remove <%= user.username %></p>
+                              <form action="/onlineoffice/storage/<%= user.user_id %>/removeUser/<%= storageInfo[0].storage_id %>?_method=DELETE" method="POST">
+                                  <button class="btn btn-danger" name="user_id" value="<%= user.user_id %>">Remove</button>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal end -->
+                <% }) %>
+            </ul>
+        </div>
+
+        <hr>
+        <% if (isLeader) { %>
+            <p class="point-cursor" data-toggle="modal" data-target="#create-folder-form"><i class="fa fa-plus-circle"></i> Create Folder</p>
+        <% } %>
+        <p class="sub-title">Folders</p>
+        <div class="row">
+            <% folders.forEach(function(folder) { %>
+                <% if (folder.user_id === currentUser.id) { -%>
+                    <div class="col-xs-3 col-sm-2 col-md-2">
+                        <a href="/onlineoffice/storage/<%= storageInfo[0].storage_id %>/folder/<%= folder.folder_id %>">
+                            <div class="smaller-circle">
+                                <p><%= folder.title %> 
+                                    <button type="submit" class="delete-btn"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></button></p>
+                                    <form style="display: none;" class="folderDelete" method="post" action="/onlineoffice/storage/<%= storageInfo[0].storage_id %>/folder/<%= folder.folder_id %>/deleteFolder?_method=DELETE"></form>
+                                    
+                            </div>
+                        </a>
+                    </div>
+                <% } %>
+            <% }) %>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-8 col-md-8">
+                <p class="sub-title">Files</p>
+                <% if (isLeader) { %>
+                    <p class="point-cursor" data-toggle="modal" data-target="#upload-file-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Upload File</p>
+                <% } %>
+                <% storageInfo.forEach(function(file) { %>
+                    <% if (file.file) { -%>
+                    <!-- <iframe src="/onlineoffice/storage/<%= file.file %>" class="storage-files"></iframe> -->
+                        <% var temp = file.file.match(/([.][^.]+)$/) %>
+                        <% if (temp[0] == ".jpg" || temp[0] == ".JPG" || temp[0] == ".jpeg" || temp[0] == ".pdf" || temp[0] == ".PDF" || temp[0] == ".png") { %>
+                            <embed src="/crm/storage/<%= file.file %>" class="storage-files">
+                        <% } else { %>
+                            Download: <a href="/crm/storage/<%= file.file %>"><%= file.file %></a>
+                        <% } %>
+                        <!-- Add delete button for each file -->
+                        <form action="/onlineoffice/storage/<%= currentUser.id %>/deleteFile/<%= file.source_id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    <% } else { -%>
+                        <p>No files</p>
+                    <% } -%>
+                <% }) %>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <p class="sub-title">Storage Navigation:</p>
+                <ul class="list-style-none">
+                    <li><a href="/onlineoffice/storage/<%= currentUser.id %>">Your storage</a></li>
+                    <% if (invitedStorages.length > 0) { %>
+                        <% invitedStorages.forEach(function(storage) { %>
+                                <li><a href="/onlineoffice/storage/<%= storage.owner_id %>"><%= storage.username%>'s storage</a></li>
+                        <% })%>
+                    <% } else { %>
+                        <p>No other invited storages</p>
+                    <% } %>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+          <h3>Invite a user to <%= storageInfo[0].first_name.charAt(0).toUpperCase() + storageInfo[0].first_name.slice(1) %>'s storage</h3>
+          <form action="/onlineoffice/storage/<%= currentUser.id %>/invite/<%= storageInfo[0].storage_id %>" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control">
+                </div>
+              <button class="btn btn-success">Invite</button>
+          </form>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+
+<!-- modal start -->
+<div class="modal" id="upload-file-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+          <h3>Upload file to <%= storageInfo[0].first_name.charAt(0).toUpperCase() + storageInfo[0].first_name.slice(1) %>'s storage</h3>
+          <form action="/onlineoffice/storage/<%= currentUser.id %>/upload/<%= storageInfo[0].storage_id %>" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="file" id="file">
+                </div>
+              <button class="btn btn-success">Upload</button>
+          </form>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="create-folder-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+          <h3>New Folder</h3>
+          <form action="/onlineoffice/storage/<%= storageInfo[0].storage_id%>/createfolder/<%= storageInfo[0].owner_id %>" method="POST">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control">
+                </div>
+              <button class="btn btn-success margin-0-auto">Create</button>
+          </form>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

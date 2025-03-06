@@ -1,0 +1,17 @@
+<% include ./partials/interviewHeader %>
+
+<div class="container process accesscode-page">
+	<p id="title"><%= codeInfo.accesscode_title %></p>
+	<p id="message"><%= codeInfo.accesscode_summary %></p>
+	<div>
+		<form action="/interview/accesscode/<%= codeInfo.name %>" method="POST">
+			<div class="form-group">
+				<label for="accesscode">Please enter accesscode to proceed:</label>
+				<input class="form-control" type="text" name="accesscode">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/footer %>

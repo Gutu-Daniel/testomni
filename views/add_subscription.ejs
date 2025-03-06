@@ -1,0 +1,83 @@
+<% include backoffice/backoffice-partials/header.ejs %>
+<style>
+ .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .form-label {
+            font-weight: 600;
+        }
+</style>
+<div id="wrapper">
+<div class="container" style="margin-top: 140px;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">Subscription Plan Add</h2>
+            </div>
+            <div class="card-body">
+                <form action="/update-plan" method="POST">
+                    <div class="mb-3">
+                        <label for="planName" class="form-label">Plan Name</label>
+                        <input type="text" class="form-control" id="planName" value="" name="planName" placeholder="Enter plan name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="planPrice" class="form-label">Plan Price</label>
+                        <input type="number" step="0.01" class="form-control" value="" id="planPrice" name="planPrice" placeholder="Enter plan price" required>
+                    </div>
+
+                     <div class="mb-3">
+                        <label for="planPrice" class="form-label">Plan Stripe Link</label>
+                        <input type="text" class="form-control" id="planLink" value="" name="planLink" placeholder="Enter plan Link" required>
+                        <input type="hidden" class="form-control" id="" value="" name="id" placeholder="Enter plan Link" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duration</label>
+                        <select class="form-control" id="duration" name="duration" required>
+                            <option value="" disabled selected>Select duration</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter plan description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apps" class="form-label">Select Apps</label>
+                        <div>
+                            <% const apps = [
+                                { id: 1, title: 'profile', key: 1, route: 'profile' },
+                                { id: 2, title: 'office', key: 5, route: 'office' },
+                                { id: 4, title: 'crm', key: 4, route: 'onlineoffice' },
+                                { id: 5, title: 'process', key: 3, route: 'opportunity' },
+                                { id: 6, title: 'linkstore', key: 6, route: 'linkstore' },
+                                { id: 7, title: 'interview', key: 7, route: 'interview' },
+                                { id: 8, title: 'storage', key: 8, route: 'storage' },
+                                { id: 9, title: 'ecrm', key: 9, route: 'office' },
+                                { id: 11, title: 'blog', key: 0, route: 'blog' }
+                            ]; %>
+                            <% apps.forEach(app => { %>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="apps[]" value="<%= app.id %>" id="app<%= app.id %>">
+                                    <label class="form-check-label" for="app<%= app.id %>">
+                                        <%= app.title %>
+                                    </label>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>
+<% include backoffice/backoffice-partials/footer.ejs %>

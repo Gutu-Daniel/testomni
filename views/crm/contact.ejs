@@ -1,0 +1,122 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include crm-partials/navTabs %>
+	<hr>
+	<p class="float-right point-cursor" data-toggle="modal" data-target="#add-contact-form"><i class="fa fa-user" aria-hidden="true"></i> Add a New Contact</p>
+	<p id="title">Contacts</p>
+	<ul class="full-list">
+		<% if (contacts.length > 0) { %>
+			<% for (var i=0; i<contacts.length;i++) { %>
+					<li class="each-list">
+						hi
+						<div class="row">
+							<div class="col-md-5">
+								<a href="/onlineoffice/contact/<%= contacts[i].id %>"><h4><%= contacts[i].name %></h4></a>
+								<div>
+									<%= contacts[i].company_title %> at <%= contacts[i].company_name %>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<h4><%= contacts[i].email %></h4>
+								<div>
+									<%= contacts[i].phone %>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<h5><span class="each-contact-status point-cursor"><%= contacts[i].status %></span> <%= contacts[i].priority %></h5>
+							</div>
+						</div>
+					</li>
+			<% } %>
+		<% } else { %>
+			<p>Empty contacts</p>
+		<% } %>
+	</ul>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="add-contact-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Add a New Contact</h3>
+  		<form action="/onlineoffice/addcontact" method="POST">
+	  		<div class="row">
+	  			<div class="col-sm-6 col-md-6">
+	  				<div class="form-group">
+	  					<label for="name">Name</label>
+	  					<input type="text" name="name" class="form-control">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="email">Email</label>
+	  					<input type="text" name="email" class="form-control">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="phone">Phone</label>
+	  					<input type="text" name="phone" class="form-control">
+	  				</div>
+	  			</div>
+	  			<div class="col-sm-6 col-md-6">
+	  				<div class="form-group">
+	  					<label for="company">Company Name</label>
+	  					<input type="text" name="company[name]" class="form-control">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="company">Title</label>
+	  					<input type="text" name="company[title]" class="form-control">
+	  				</div>
+	  			</div>
+	  		</div>
+	  		<hr>
+  			<div class="row">
+  				<div class="col-sm-6 col-md-6">
+  					<div class="form-group">
+	  					<label for="address">Address</label>
+	  					<textarea type="text" name="address[street]" class="form-control" placeholder="Street"></textarea>
+	  					<div id="city-state-zip">
+	  						<input type="text" name="address[city]" class="form-control" placeholder="City">
+	  						<input type="text" name="address[state]" class="form-control" placeholder="State">
+	  						<input type="text" name="address[zip]" class="form-control" placeholder="Zip">
+	  					</div>
+	  					<input type="text" name="address[country]" class="form-control" placeholder="Country">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="background-info">Background Info</label>
+	  					<textarea type="text" name="background_info" class="form-control" placeholder="Background Info"></textarea>
+	  				</div>
+  				</div>
+  				<div class="col-sm-6 col-md-6">
+  					<div class="form-group">
+	  					<label for="website">Website</label>
+	  					<input type="text" name="website" class="form-control" placeholder="Website">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="birthday">Birthday</label>
+	  					<input type="text" name="birthday" class="form-control" placeholder="Birthday">
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="status">Status</label>
+							<select class="form-control" name="status">
+								<option name="active">Active</option>
+								<option name="closed">Closed</option>
+							</select>
+	  				</div>
+	  				<div class="form-group">
+	  					<label for="priority">Priority</label>
+							<select class="form-control" name="priority">
+								<option name="low">Low Priority</option>
+								<option name="medium">Medium Priority</option>
+								<option name="high">High Priority</option>
+							</select>
+	  				</div>
+	  			</div>
+  			</div>
+	  		<button class="btn btn-success">Create Contact</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

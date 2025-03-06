@@ -1,0 +1,110 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+  <hr>
+  <p id="title"><%= calendarOwner.first_name.charAt(0).toUpperCase() + calendarOwner.first_name.slice(1) %>'s Community Task Grid</p>
+  <div class="calendar-tasks">
+    <p class="sub-title">Community Tasks</p>
+    <p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+
+    <h3>Invites</h3>
+    <ul>
+      <% taskGridInvitations.forEach(function(t, i) { %>
+      <li><%= t.username %> <a class="text-small btn btn-xs btn-default" href="/onlineoffice/viewComTasks/<%= t.id %>" title="View"><i class="fa fa-angle-right" aria-hidden="true"></i></i></a></li>
+      <% }) %>
+    </ul>
+
+    <h3>Invited</h3>
+    <ul>
+      <% taskGridInvited.forEach(function(t, i) { %>
+      <li><%= t.username %></li>
+      <% }) %>
+    </ul>
+
+    <select id="community-task-filter">
+      <option value="1">Today</option>
+      <option selected value="2">Past 7 Days</option>
+      <option value="3">Past 30 Days</option>
+      <option value="4">Past 60 Days</option>
+      <option value="5">Past 90 Days</option>
+      <option value="6">Past Year</option>
+    </select>
+    <button id="filter-btn" data-user-id="<%= userInfo[0].user_id %>">Filter</button>
+    <div class="row task-grid">
+      <div class="col-xs-12" style="padding: 0 1.5rem;">
+        <div id="comtasksTable" style=" overflow-x: scroll; ">
+          <table id="comtasksTable">
+            <thead>
+              <tr>
+                <th class="each-task">Community Tasks</th>
+                <% filteredDays.forEach(function(date) { %>
+                <th class="each-task">
+                  <%= date %>
+                </th>
+                <% }) %>
+              </tr>
+            </thead>
+            <tbody>
+              <% 
+                const currentDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+              %>
+              <% taskNames.forEach(function(taskName) { %>
+              <tr>
+                <td class="each-task">
+                  <%= taskName %>
+                </td>
+                <% filteredDays.forEach(function(filterDay) { %>
+                  <% var is_checkbox = false; %>
+                  <% comTasks.forEach(function(task) { %>
+                    <% if (task.task_date == filterDay && task.name == taskName) { %>
+                      <% is_checkbox = true; %>
+                      <td class="each-task each-task-cell">
+                        <% 
+                          // Check if the task date is today or in the past
+                          var taskDate = new Date(filterDay).toISOString().split('T')[0]; 
+                          var isDisabled = taskDate !== currentDate ? "disabled" : ""; // Disable if task date is not today
+                        %>
+                        <% if (task.completed == 1) { %>
+                          <input type="checkbox" <%= isDisabled %> checked data-id="<%= task.user_tasks_id %>" class="task-checkbox">
+                        <% } else { %>
+                          <input type="checkbox" <%= isDisabled %> data-id="<%= task.user_tasks_id %>" class="task-checkbox">
+                        <% } %>
+                      </td>
+                    <% } %>
+                  <% }) %>
+                  <% if (!is_checkbox) { %>
+                    <td class="each-task">
+                      &nbsp;
+                    </td>
+                  <% } %>
+                <% }) %>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+      <h3>Invite a user to your task grid</h3>
+      <form action="/onlineoffice/communitytasksInvite" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" class="form-control">
+        </div>
+        <button class="btn btn-success">Invite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

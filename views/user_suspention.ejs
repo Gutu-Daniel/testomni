@@ -1,0 +1,7 @@
+<h1>Your Account has been suspended</h1>
+<p><%= reason %></p>
+<% if (reason.includes("subscription")) { %>
+  <form action="/payment" method="GET">
+    <button type="submit">Renew Subscription</button>
+  </form>
+<% } %>

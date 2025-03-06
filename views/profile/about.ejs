@@ -1,0 +1,360 @@
+<% include ./partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include ./partials/profile-content-tabs.ejs %>
+
+		<div class="content-tabs">
+			<div class="semi-circle semi-circle-select" data-attribute="personal-info"><p>Personal Info</p></div>
+			<% if (personalInfo.favorite) { %>
+				<div class="semi-circle" data-attribute="favorite"><p>Favorites</p></div>
+			<% } %>
+			<% if (personalInfo.hobby) { %>
+				<div class="semi-circle" data-attribute="hobby"><p>Hobbies</p></div>
+			<% } %>
+			<% if (personalInfo.skill) { %>
+				<div class="semi-circle" data-attribute="skill"><p>Skills</p></div>
+			<% } %>
+			<% if (personalInfo.dream) { %>	
+				<div class="semi-circle" data-attribute="dream"><p>Dreams</p></div>
+			<% } %>
+			<% if (personalInfo.quote) { %>
+				<div class="semi-circle" data-attribute="quote"><p>Quotes</p></div>
+			<% } %>
+			<% if (personalInfo.event) { %>
+				<div class="semi-circle" data-attribute="event"><p>Events</p></div>
+			<% } %>
+			<% if (personalInfo.family) { %>
+				<div class="semi-circle" data-attribute="family"><p>Family</p></div>
+			<% } %>
+			<% if (personalInfo.group) { %>
+			<div class="semi-circle" data-attribute="group"><p>My Group</p></div>
+			<% } %>
+			<% if (personalInfo.education) { %>
+				<div class="semi-circle" data-attribute="education"><p>Education</p></div>
+			<% } %>
+			<% if (personalInfo.like) { %>
+				<div class="semi-circle" data-attribute="like"><p>Like</p></div>
+			<% } %>
+			<% if (personalInfo.philosophy) { %>
+				<div class="semi-circle" data-attribute="philosophy"><p>Philosophy</p></div>
+			<% } %>
+			<% if (personalInfo.status) { %>
+				<div class="semi-circle" data-attribute="status"><p>Status</p></div>
+			<% } %>
+			<% if (personalInfo.question) { %>
+			<div class="semi-circle" data-attribute="question"><p>Questions</p></div>
+			<% } %>
+			<div class="semi-circle" data-attribute="resume"><p>Resume</p></div>
+			<% if (personalInfo.career) { %>
+				<div class="semi-circle" data-attribute="career"><p>Career</p></div>
+			<% } %>
+			<% if (personalInfo.real_me) { %>
+				<div class="semi-circle" data-attribute="real-me"><p>Real Me</p></div>
+			<% } %>
+			<% if (personalInfo.business) { %>
+				<div class="semi-circle" data-attribute="business"><p>Business</p></div>
+			<% } %>
+			<% if (personalInfo.my_life) { %>
+				<div class="semi-circle" data-attribute="my-life"><p>My Life</p></div>
+			<% } %>
+			<% if (personalInfo.goal) { %>
+				<div class="semi-circle" data-attribute="goal"><p>Goals</p></div>
+			<% } %>
+			<% if (personalInfo.life_line) { %>
+				<div class="semi-circle" data-attribute="life-line"><p>Life Line</p></div>
+			<% } %>
+			<% if (personalInfo.pet) { %>
+				<div class="semi-circle" data-attribute="pet"><p>Pets</p></div>
+			<% } %>
+		</div>
+		<div class="content align-left">
+			<% if (userInfo[0].user_id == currentUser.id) { %>
+				<p class="float-right point-cursor" data-toggle="modal" data-target="#personal-info-form"><i class="fa fa-book" aria-hidden="true"></i> Edit Personal Info</p>
+			<% } %>
+			<div class="section about first personal-info">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s personal information</p>
+				<% if (personalInfo.birthday) { %>
+					<p>Birthday: <span class="float-right"><%= personalInfo.birthday %></span></p>
+				<% } %>
+				<% if (personalInfo.height) { %>
+					<p>Height: <span class="float-right"><%= personalInfo.height %></span></p>
+				<% } %>
+				<% if (personalInfo.eye_color) { %>
+					<p>Eye Color: <span class="float-right"><%= personalInfo.eye_color %></span></p>
+				<% } %>
+				<% if (personalInfo.hair_color) { %>
+					<p>Hair Color: <span class="float-right"><%= personalInfo.hair_color %></span></p>
+				<% } %>
+				<% if (personalInfo.religion) { %>
+					<p>Religion: <span class="float-right"><%= personalInfo.religion %></span></p>
+				<% } %>
+				<% if (personalInfo.smoke) { %>
+					<p>Smoke: <span class="float-right"><%= personalInfo.smoke %></span></p>
+				<% } %>
+				<% if (personalInfo.drink) { %>
+					<p>Drink: <span class="float-right"><%= personalInfo.drink %></span></p>
+				<% } %>
+				<% if (personalInfo.company) { %>
+					<p>Company: <span class="float-right"><%= personalInfo.company %></span></p>
+				<% } %>
+				<% if (personalInfo.job_title) { %>	
+					<p>Job Title: <span class="float-right"><%= personalInfo.job_title %></span></p>
+				<% } %>
+				<% if (personalInfo.nationality) { %>
+					<p>Nationality: <span class="float-right"><%= personalInfo.nationality %></span></p>
+				<% } %>
+				<% if (personalInfo.language) { %>	
+					<p>Language: <span class="float-right"><%= personalInfo.language %></span></p>
+				<% } %>
+				<% if (personalInfo.children) { %>
+					<p>Children: <span class="float-right"><%= personalInfo.children %></span></p>
+				<% } %>
+				<% if (personalInfo.description) { %>
+					<p>Description: <span class="float-right"><%= personalInfo.description %></span></p>
+				<% } %>
+			</div>
+			<div class="section about favorite">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Favorites</p>
+				<p>Favorites: <span class="float-right"><%= personalInfo.favorite %></span></p>
+			</div>
+			<div class="section about hobby">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Hobbies</p>
+					<p>Hobbies: <span class="float-right"><%= personalInfo.hobby %></span></p>
+			</div>
+			<div class="section about skill">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Skills</p>
+					<p>Skills: <span class="float-right"><%= personalInfo.skill %></span></p>
+			</div>
+			<div class="section about dream">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Dreams</p>
+				<p>Dreams: <span class="float-right"><%= personalInfo.dream %></span></p>
+			</div>
+			<div class="section about quote">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Quotes</p>
+				<p>Quote: <span class="float-right"><%= personalInfo.quote %></span></p>
+			</div>
+			<div class="section about event">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Events</p>
+				<p>Events: <span class="float-right"><%= personalInfo.event %></span></p>
+			</div>
+			<div class="section about family">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Family</p>
+				<p>Family: <span class="float-right"><%= personalInfo.family %></span></p>
+			</div>
+			<div class="section about group">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Groups</p>
+				<p>Group: <span class="float-right"><%= personalInfo.group %></span></p>
+			</div>
+			<div class="section about education">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Education</p>
+				<p>Education: <span class="float-right"><%= personalInfo.education %></span></p>
+			</div>
+			<div class="section about like">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Likes</p>
+				<p>Likes: <span class="float-right"><%= personalInfo.like %></span></p>
+			</div>
+			<div class="section about philosophy">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Philosphy</p>
+				<p>Philosophy: <span class="float-right"><%= personalInfo.philosophy %></span></p>
+			</div>	
+			<div class="section about status">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Status</p>
+				<p>Status: <span class="float-right"><%= personalInfo.status %></span></p>
+			</div>
+			<div class="section about question">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Questions</p>
+				<p>Questions: <span class="float-right"><%= personalInfo.question%></p>
+			</div>
+			<div class="section about resume">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Resume</p>
+				<p>Resume: <span class="float-right"><%= personalInfo.resume%></p>
+			</div>
+			<div class="section about career">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Career</p>
+				<p>Career: <span class="float-right"><%= personalInfo.career %></span></p>
+			</div>
+			<div class="section about real-me">
+				<p class="sub-title">The Real <%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %></p>
+				<p>The real me: <span class="float-right"><%= personalInfo.real_me %></span></p>
+			</div>
+			<div class="section about business">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Business</p>
+				<p>Business: <span class="float-right"><%= personalInfo.business %></span></p>
+			</div>
+			<div class="section about my-life">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Life</p>
+				<p>My Life: <span class="float-right"><%= personalInfo.my_life %></span></p>
+			</div>
+			<div class="section about goal">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Goals</p>
+				<p>Goals: <span class="float-right"><%= personalInfo.goal %></span></p>
+			</div>
+			<div class="section about life-line">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Life Line</p>
+				<p>Life Line: <span class="float-right"><%= personalInfo.life_line %></span></p>
+			</div>
+			<div class="section about pet">
+				<p class="sub-title"><%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>'s Pets</p>
+				<p>Pets: <span class="float-right"><%= personalInfo.pet %></span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="personal-info-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Personal Info</h3>
+  		<form action="/profile/<%= userInfo[0].user_id %>/about?_method=PUT" method="POST">
+  			<div class="row">
+  				<div class="col-xs-6 col-sm-4 col-md-4">
+  					<div class="form-group">
+							<label for="birthday">Birthday:</label>
+							<input type="text" maxlength="55" name="birthday" class="form-control" value="<%= personalInfo.birthday %>">
+						</div>
+						<div class="form-group">
+							<label for="height">Height:</label>
+							<input type="text" maxlength="55" name="height" class="form-control" value="<%= personalInfo.height %>">
+						</div>
+						<div class="form-group">
+							<label for="eye_color">Eye color:</label>
+							<input type="text" maxlength="55" name="eye_color" class="form-control" value="<%= personalInfo.eye_color %>">
+						</div>
+						<div class="form-group">
+							<label for="hair_color">Hair color:</label>
+							<input type="text" maxlength="55" name="hair_color" class="form-control" value="<%= personalInfo.hair_color %>">
+						</div>
+						<div class="form-group">
+							<label for="religion">Religion:</label>
+							<input type="text" maxlength="55" name="religion" class="form-control" value="<%= personalInfo.religion %>">
+						</div>
+						<div class="form-group">
+							<label for="smoke">Do you smoke?</label>
+							<input type="text" maxlength="55" name="smoke" class="form-control" value="<%= personalInfo.smoke %>">
+						</div>
+  					<div class="form-group">
+							<label for="drink">Do you drink alcohol?</label>
+							<input type="text" maxlength="55" name="drink" class="form-control" value="<%= personalInfo.drink %>">
+						</div>
+						<div class="form-group">
+							<label for="company">Which company do you work for?</label>
+							<input type="text" maxlength="55" name="company" class="form-control" value="<%= personalInfo.company %>">
+						</div>
+						<div class="form-group">
+							<label for="job_title">Job position:</label>
+							<input type="text" maxlength="55" name="job_title" class="form-control" value="<%= personalInfo.job_title %>">
+						</div>
+						<div class="form-group">
+							<label for="nationality">Nationality</label>
+							<input type="text" maxlength="55" name="nationality" class="form-control" value="<%= personalInfo.nationality %>">
+						</div>
+						<div class="form-group">
+							<label for="language">What languages do you speak?</label>
+							<input type="text" maxlength="55" name="language" class="form-control" value="<%= personalInfo.language %>">
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<div class="form-group">
+							<label for="children">Do you have any children?</label>
+							<input type="text" maxlength="55" name="children" class="form-control" value="<%= personalInfo.children %>">
+						</div>
+						<div class="form-group">
+							<label for="description">A little about yourself:</label>
+							<input type="text" maxlength="55" name="description" class="form-control" value="<%= personalInfo.description %>">
+						</div>
+						<div class="form-group">
+							<label for="favorite">What are some of your favorite things?</label>
+							<input type="text" maxlength="55" name="favorite" class="form-control" value="<%= personalInfo.favorite %>">
+						</div>
+						<div class="form-group">
+							<label for="hobby">Any hobbies?</label>
+							<input type="text" maxlength="55" name="hobby" class="form-control" value="<%= personalInfo.hobby %>">
+						</div>
+						<div class="form-group">
+							<label for="skill">Skills:</label>
+							<input type="text" maxlength="55" name="skill" class="form-control" value="<%= personalInfo.skill %>">
+						</div>
+						<div class="form-group">
+							<label for="dream">What are your dreams?</label>
+							<input type="text" maxlength="55" name="dream" class="form-control" value="<%= personalInfo.dream %>">
+						</div>
+						<div class="form-group">
+							<label for="quote">Favorite quote:</label>
+							<input type="text" maxlength="55" name="quote" class="form-control" value="<%= personalInfo.quote %>">
+						</div>
+						<div class="form-group">
+							<label for="event">What are some events you like?</label>
+							<input type="text" maxlength="55" name="event" class="form-control" value="<%= personalInfo.event %>">
+						</div>
+						<div class="form-group">
+							<label for="family">Family:</label>
+							<input type="text" maxlength="55" name="family" class="form-control" value="<%= personalInfo.family %>">
+						</div>
+						<div class="form-group">
+							<label for="group">Group:</label>
+							<input type="text" maxlength="55" name="group" class="form-control" value="<%= personalInfo.group %>">
+						</div>
+						<div class="form-group">
+							<label for="education">Education:</label>
+							<input type="text" maxlength="55" name="education" class="form-control" value="<%= personalInfo.education %>">
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<div class="form-group">
+							<label for="like">What are some things you like?</label>
+							<input type="text" maxlength="55" name="like" class="form-control" value="<%= personalInfo.like %>">
+						</div>
+						<div class="form-group">
+							<label for="philosophy">Philosophy:</label>
+							<input type="text" maxlength="55" name="philosophy" class="form-control" value="<%= personalInfo.philosophy %>">
+						</div>
+						<div class="form-group">
+							<label for="status">Status:</label>
+							<input type="text" maxlength="55" name="status" class="form-control" value="<%= personalInfo.status %>">
+						</div>
+						<div class="form-group">
+							<label for="question">Question:</label>
+							<input type="text" maxlength="55" name="question" class="form-control" value="<%= personalInfo.question %>">
+						</div>
+						<div class="form-group">
+							<label for="career">Career:</label>
+							<input type="text" maxlength="55" name="career" class="form-control" value="<%= personalInfo.career %>">
+						</div>
+						<div class="form-group">
+							<label for="real_me">The real me:</label>
+							<input type="text" maxlength="55" name="real_me" class="form-control" value="<%= personalInfo.real_me %>">
+						</div>
+						<div class="form-group">
+							<label for="business">Business:</label>
+							<input type="text" maxlength="55" name="business" class="form-control" value="<%= personalInfo.business %>">
+						</div>
+						<div class="form-group">
+							<label for="my_life">My life:</label>
+							<input type="text" maxlength="55" name="my_life" class="form-control" value="<%= personalInfo.my_life %>">
+						</div>
+						<div class="form-group">
+							<label for="goal">What are some of your goal:</label>
+							<input type="text" maxlength="55" name="goal" class="form-control" value="<%= personalInfo.goal %>">
+						</div>
+						<div class="form-group">
+							<label for="life_line">Life line:</label>
+							<input type="text" maxlength="55" name="life_line" class="form-control" value="<%= personalInfo.life_line %>">
+						</div>
+						<div class="form-group">
+							<label for="pet">Do you have any pet?</label>
+							<input type="text" maxlength="55" name="pet" class="form-control" value="<%= personalInfo.pet %>">
+						</div>
+  				</div>
+  			</div>
+	  		<button class="btn btn-success">Save</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include ./partials/footer %>

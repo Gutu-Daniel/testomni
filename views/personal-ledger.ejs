@@ -1,0 +1,36 @@
+<% include partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include partials/content-tabs.ejs %>
+
+		<div class="content-tabs">
+			<a href="/transfer"><div class="semi-circle"><p>Transfer</p></div></a>
+			<a href="/public-ledger/<%= userInfo[0].user_id %>"><div class="semi-circle"><p>Public Ledger</p></div></a>
+			<a href="/personal-ledger/<%= userInfo[0].user_id %>"><div class="semi-circle"><p>Personal Ledger</p></div></a>
+			<div class="semi-circle"><p>Placeholder</p></div>
+			<div class="semi-circle"><p>Placeholder</p></div>
+			<div class="semi-circle"><p>Placeholder</p></div>
+		</div>
+		<div class="content">
+			<div class="ledger">
+				<h2>Personal Transactions</h2>
+				<ul>
+					<h4>Sent</h4>
+					<% for (var i=0;i<data.length;i++) { -%>
+						<li><strong>You</strong> transfered <strong><%= data[i].to_user_amount %> point(s)</strong> to <strong><%= data[i].to_user %></strong></li>
+					<% } %>
+				</ul>
+				<ul>
+					<h4>Received</h4>
+					<% for (var i=0;i<data2.length;i++) { -%>
+						<li><strong><%= data2[i].from_user %></strong> transfered <strong><%= data2[i].to_user_amount %> point(s)</strong> to <strong>You</strong></li>
+					<% } %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include partials/footer %>

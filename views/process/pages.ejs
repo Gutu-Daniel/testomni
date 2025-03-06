@@ -1,0 +1,17 @@
+<% include ./partials/processHeader %>
+
+<div style="margin-top: 140px;" class="container process page-page">
+	<p id="title">Navigate to Pages</p>
+	<p id="message">You Unlocked</p>
+	<div>
+		<% for (var i=0;i<pagesInfo.length;i++) { -%>
+			<p><a href="/opportunity/page/<%= pagesInfo[i].name %>"><%= pagesInfo[i].name %></a></p>
+		<% } -%>
+	</div>
+	<p class="sub-title">Process key</p>
+	<div class="form-group">
+		<input class="form-control app-keys" type="text" value="3" readonly>
+	</div>
+</div>
+
+<% include ./partials/processFooter %>

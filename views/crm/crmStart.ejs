@@ -1,0 +1,17 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container storage start-page">
+	<p id="title">Online Office</p>
+	<p id="message">Organize your business online!</p>
+	<div>
+		<form action="/onlineoffice" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include crm-partials/crmFooter %>

@@ -1,0 +1,17 @@
+<% include ./partials/processHeader %>
+
+<div style="margin-top: 140px;" class="container process start-page">
+	<p id="title">Welcome to the process</p>
+	<p id="message">A new opportunity awaits!</p>
+	<div>
+		<form action="/opportunity" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/processFooter %>

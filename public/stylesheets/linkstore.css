@@ -1,0 +1,36 @@
+.linkstore {
+	margin: 2% auto;
+}
+
+.start-page {
+	margin-top: 8%;
+	width: 50%;
+	text-align: center;
+}
+
+.start-page input {
+	margin: 0 auto;
+	width: 30%;
+}
+
+#title {
+	font-size: 2.25em;
+}
+
+.sub-title {
+	font-size: 1.5em;
+}
+
+.small-text {
+	font-size: .7em;
+}
+
+.delete-btn {
+	visibility: hidden;
+	background-color: transparent;
+	border: 0;
+}
+
+.smaller-circle:hover .delete-btn {
+	visibility: visible;
+}

@@ -1,0 +1,17 @@
+<% include linkstore-partials/linkstoreHeader %>
+
+<div class="container linkstore start-page">
+	<p id="title">Linkstore</p>
+	<p id="message">Organize your links and share</p>
+	<div>
+		<form action="/linkstore" method="POST">
+			<div class="form-group">
+				<label for="referrer_code">Please enter your referrer's code to begin:</label>
+				<input class="form-control" type="text" name="referrer_code">
+			</div>
+			<button class="btn btn-success">Enter</button>
+		</form>
+	</div>
+</div>
+
+<% include linkstore-partials/linkstoreFooter %>

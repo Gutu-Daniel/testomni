@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Register Team Admin</title>
+	<link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<body>
+
+	<div class="signup-form container">
+		<h2>Register a Team Admin</h2>
+		<form action="<%= signupUrl%>" method="POST">
+			<div class="form-group">
+				<input type="text" class="form-control" name="first_name" placeholder="First Name">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="last_name" placeholder="Last Name">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="username" placeholder="Username">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" name="password" placeholder="Password">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" name="password2" placeholder="Password (repeat)">
+			</div>
+			<div class="form-group">
+				<input type="radio" name="is_admin" value="1" checked/> Admin
+			</div>
+			<div class="form-group">
+				<input type="radio" name="is_teamAdmin" value="1" checked/> Team Admin
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default" value="Sign up">
+			</div>
+		</form>
+	</div>
+
+<% include ../partials/footer%>

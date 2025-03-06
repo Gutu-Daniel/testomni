@@ -1,0 +1,318 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<% include ./partials/header %>
+<style>
+.wrapper{
+    max-width: 1090px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.wrapper .table{
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;
+  border-radius: 10px;
+    width: calc(33% - 20px);
+    padding: 30px 30px;
+    position: relative;
+  
+}
+
+@media (max-width: 1020px){
+    .wrapper .table{
+        width: calc(50% - 20px);
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 698px){
+    .wrapper .table{
+        width: 100%;
+    }
+}
+
+.table .price-section{
+   display: flex;
+   justify-content: center;
+}
+
+.price-section .price-area{
+    height: 120px;
+    width: 120px;
+    background: #C0C0C0;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.price-section .price-area .inner-area{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    color: #fff;
+    line-height: 117px;
+    text-align: center;
+    position: relative;
+}
+
+.price-area .inner-area .text{
+    font-size: 25px;
+    font-weight: 400;
+    position: absolute;
+    top: -10px;
+    left: 17px;
+}
+
+.price-area .inner-area .price{
+    font-size: 35px;
+    font-weight: 500;
+}
+
+.table .package-name{
+    width: 100%;
+    height: 2px;
+    background: #ffecb3;
+    margin: 35px 0;
+    position: relative;
+}
+
+.table .package-name::before{
+    position: absolute;
+   
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    font-size: 25px;
+    padding: 0 10px;
+    font-weight: bolder;
+}
+
+.table .features li{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.features li .list-name{
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.features li .icon{
+    font-size: 15px;
+}
+
+.features li .icon.check{
+    color: #2db94d;
+}
+
+.features li .icon.cross{
+    color: #cd3241;
+}
+
+.table .btn{
+  color: black;
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+/* .table .btn button{
+    width: 80%;
+    height: 50px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+} */
+
+.basic .price-area,
+.basic .inner-area{
+    background: #C0C0C0;
+}
+
+.basic .btn a{
+       background: #fff;
+    color: #C0C0C0;
+    border: 2px solid #C0C0C0;
+    padding: 8px 11px 7px 11px;
+}
+
+.basic .btn a:hover{
+    border-radius: 6px;
+    background: #C0C0C0;
+    color: #fff;
+}
+
+.Premium .price-area,
+.Premium .inner-area{
+    background: #a26bfa;
+}
+
+.Premium .btn a{
+    background: #fff;
+    color: #a26bfa;
+    border: 2px solid #a26bfa;
+}
+
+.Premium .btn a:hover{
+    border-radius: 6px;
+    background: #a26bfa;
+    color: #fff;
+}
+
+.Ultimate .price-area,
+.Ultimate .inner-area{
+    background: #43ef8b;
+}
+
+.Ultimate .btn button{
+    background: #fff;
+    color: #43ef8b;
+    border: 2px solid #43ef8b;
+}
+
+.Ultimate .btn button:hover{
+    border-radius: 6px;
+    background: #43ef8b;
+    color: #fff;
+}
+
+.basic .package-name{
+    background: #ffecb3;
+        font-weight: 800;
+}
+
+.Premium .package-name{
+    background: #a26bfa;
+}
+
+.Ultimate .package-name{
+    background: #43ef8b;
+}
+
+
+.Premium .package-name::before{
+    content: "Premium";
+}
+
+.Ultimate .package-name::before{
+    content: "Ultimate";
+}
+
+.basic ::selection,
+.basic .price-area,
+.basic .inner-area{
+    background: #C0C0C0;
+}
+
+.Premium ::selection,
+.Premium .price-area,
+.Premium .inner-area{
+    background: #a26bfa;
+}
+
+.Ultimate ::selection,
+.Ultimate .price-area,
+.Ultimate .inner-area{
+    background: #43ef8b;
+}
+
+</style>
+<div class="profile">
+  <div class="container">
+    <div class="wrapper">
+      <% apps.forEach(function(sub) { %>
+        <div class="table basic">
+          <div class="price-section">
+            <div class="price-area">
+              <div class="inner-area">
+                <span class="price">$<%= sub.price %></span>
+              </div>
+            </div>
+          </div>
+          <div class="package-name">
+            <%= sub.plan %>
+          </div>
+          <div class="features">
+            <% 
+              // Convert string to array
+              let items = sub.key_point.split(',').map(item => item.trim());
+            %>
+            <% items.forEach(item => { %>
+              <li>
+                <span class="list-name"><%= item %></span>
+              </li>
+            <% }); %>
+            <div class="btn">
+              <form action="/redirect-to-stripe" method="POST">
+                <input type="hidden" name="planId" value="<%= sub.id %>">
+                <input type="hidden" name="planLink" value="<%= sub.planLink %>">
+                <input type="hidden" name="duration" value="<%= sub.duration %>">
+                <button type="submit">Purchase</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <div style="margin-bottom: 25px; margin-top: 50px;">
+      <div id="smart-button-container">
+        <div style="text-align: center;">
+          <div id="paypal-button-container" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script>
+  function initPayPalButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'paypal',
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            "amount": {
+              "currency_code": "USD",
+              "value": 1
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+          // Full available details
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          // Show a success message within this page, e.g.
+          const element = document.getElementById('paypal-button-container');
+          element.innerHTML = '';
+          element.innerHTML = '<h3>Thank you for your payment!</h3>';
+          // Or go to another URL:  actions.redirect('thank_you.html');
+        });
+      },
+      onError: function(err) {
+        console.log(err);
+      }
+    }).render('#paypal-button-container');
+  }
+  initPayPalButton();
+</script>
+<% include ./partials/footer %>

@@ -1,0 +1,51 @@
+<% include ./partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include ./partials/profile-content-tabs.ejs %>
+
+		<div class="content-tabs">
+			<div class="semi-circle semi-circle-select" data-attribute="friends"><p>Friends List</p></div>
+			<!-- <div class="semi-circle" data-attribute="videos"><p></p></div> -->
+		</div>
+		<div class="content">
+			<% if (currentUser.id == userInfo[0].user_id) { %>
+				<div class="section friends first">
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<p class="sub-title">Your Friends</p>
+							<ul class="friends-list">
+								<% userFriends.forEach(function(friend) { %>
+									<% if (friend.approved) { %>
+										<li><a href="/profile/<%= friend.friend_id %>"><%= friend.username %></a></li>
+									<% } %>
+								<% }) %>
+							</ul>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<p class="sub-title">Friend Requests</p>
+							<ul class="friends-request-list">
+								<% friendRequests.forEach(function(request) { %>
+									<% if (!request.approved) { %>
+										<li class="display-inline"><a href="/profile/<%= request.user_id %>"><%= request.username %></a></li>
+										<form class="float-right display-inline" action="/profile/<%= currentUser.id %>/acceptfriendrequest/<%= request.id %>?_method=PUT" method="POST">
+											<button class="btn btn-default">Accept</button>
+										</form>
+									<% } %>
+								<% }) %>
+							</ul>
+						</div>
+					</div>
+				</div>
+			<% } else { %>
+				<p>You cannot view <%= userInfo[0].first_name%>'s friends list page</p>
+			<% } %>
+			<!-- <div class="section videos">
+				
+			</div> -->
+		</div>
+	</div>
+</div>
+
+<% include ./partials/footer %>

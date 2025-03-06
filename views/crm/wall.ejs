@@ -1,0 +1,142 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include crm-partials/navTabs %>
+	<hr>
+	<div>
+		<% if (isLeader) { %>
+			<p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+		<% } %>
+		<ul>
+			<li><%= wallUser.username %> <span class="small-text">owner</span></li>
+			<% usersInWall.forEach(function(user) { %>
+				<% if (wallUser.username == currentUser.username) { -%>
+					<li><%= user.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= user.invited_id%>">x</button></li>
+				<% } else { %>
+					<li><%= user.username %></li>
+				<% } %>
+				<!-- modal start -->
+				<div class="modal" id="remove-user-form-<%= user.invited_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+				  	<div class="modal-content">
+				  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+							<p class="sub-title">Are you sure you want to remove <%= user.username %></p>
+				  		<form action="/onlineoffice/wall/<%= wallUser.id %>/delete/<%= user.invited_id%>?_method=DELETE" method="POST">
+					  		<button class="btn btn-danger" name="user_id" value="<%= user.invited_id %>">Remove</button>
+					  	</form>
+						</div>
+					</div>
+				</div>
+				<!-- modal end -->
+			<% }) %>
+		</ul>
+	</div>	
+
+	<hr>
+
+	<div>
+		<p class="title"><%= wallUser.first_name.charAt(0).toUpperCase() + wallUser.first_name.slice(1)%>'s Wall</p>
+		<div class="content-tabs">
+			<span class="semi-circle semi-circle-select" data-attribute="text-wall-form"><p>Text</p></span>
+			<span class="semi-circle" data-attribute="media-wall-form"><p>Media</p></span>
+		</div>
+		<form class="section text-wall-form first" action="/onlineoffice/wall/<%= wallUser.id %>" method="POST">
+			<div class="form-group">
+				<textarea name="post_text" class="form-control" id="post-content-textbox" placeholder="Write a post"></textarea>
+				<button class="btn btn-default">Post</button>
+			</div>
+		</form>
+		<form class="section media-wall-form" action="/onlineoffice/wall/<%= wallUser.id %>" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<div class="form-group">
+					<input type="file" name="file" id="file">
+				</div>
+				<button class="btn btn-default">Upload</button>
+			</div>
+		</form>
+		<div class="wall-tabs">
+			<span class="semi-circle semi-circle-select" data-attribute="wall"><p>All Posts</p></span>
+			<span class="semi-circle" data-attribute="text-wall"><p>Text Posts</p></span>
+			<span class="semi-circle" data-attribute="photos-wall"><p>Photos</p></span>
+			<span class="semi-circle" data-attribute="videos-wall"><p>Videos</p></span>
+		</div>
+		<div class="posts">
+			<% posts.forEach(function(post) { %>
+				<% if (post.post_text) { %>
+					<div class="wall-section text-wall wall">
+						<div class="each-post">
+							<% if (currentUser.id == post.post_user_id || currentUser.id == userInfo[0].user_id) { %>
+								<form action="/onlineoffice/wall/<%= wallUser.id %>/post/<%= post.post_id %>?_method=DELETE" method="POST">
+									<button class="btn-default delete-post float-right"><i class="fa fa-close"></i></button>
+								</form>
+							<% } %>
+							<p><%= post.username %><span class="small-text"> on: <%= post.date %> - <%= post.time %></span></></p>
+							<p><%= post.post_text %></p>
+							<% if (currentUser.id == post.post_user_id) { %>
+								<button class="btn btn-default btn-sm edit-post-btn">Edit</button>
+								<form action="/onlineoffice/wall/<%= wallUser.id %>/post/<%= post.post_id %>?_method=PUT" method="POST" class="post-edit-form">
+									<textarea name="post_text" class="form-control" id="post-content-textbox" placeholder="Edit post"><%= post.post%></textarea>
+									<button class="btn btn-default btn-sm">Save</button>
+								</form>
+							<% } %>
+						</div>
+					</div>
+				<% } %>
+				<% if (post.post_media) { -%>
+					<% var temp = post.post_media.match(/([.][^.]+)$/) %>
+					<% if (temp[0] == ".jpg" || temp[0] == ".JPG" || temp[0] == ".jpeg" || temp[0] == ".pdf" || temp[0] == ".PDF" || temp[0] == ".png" || temp[0] == ".PNG") { %>
+						<div class="wall-section photos-wall wall">
+							<div class="each-post">
+								<% if (currentUser.id == post.post_user_id || currentUser.id == userInfo[0].user_id) { %>
+									<form action="/onlineoffice/wall/<%= wallUser.id %>/post/<%= post.post_id %>?_method=DELETE" method="POST">
+										<button class="btn-default delete-post float-right"><i class="fa fa-close"></i></button>
+									</form>
+								<% } %>
+								<p><%= post.username %><span class="small-text"> on: <%= post.date %> - <%= post.time %></span></></p>
+								<embed src="/wall/<%= post.post_media %>" class="storage-files">
+							</div>
+						</div>
+					<% } %>
+				<% } %>
+				<% if (post.post_media) { -%>
+					<% var temp = post.post_media.match(/([.][^.]+)$/) %>
+					<% if (temp[0] == ".mov" || temp[0] == ".MOV" || temp[0] == ".mp4" || temp[0] == ".MP4" || temp[0] == ".mpeg" || temp[0] == ".MPEG") { %>
+						<div class="wall-section videos-wall wall">
+							<div class="each-post">
+								<% if (currentUser.id == post.post_user_id || currentUser.id == userInfo[0].user_id) { %>
+									<form action="/onlineoffice/wall/<%= wallUser.id %>/post/<%= post.post_id %>?_method=DELETE" method="POST">
+										<button class="btn-default delete-post float-right"><i class="fa fa-close"></i></button>
+									</form>
+								<% } %>
+								<p><%= post.username %><span class="small-text"> on: <%= post.date %> - <%= post.time %></span></></p>
+								<video class="wall-video point-cursor" controls>
+								  <source src="/wall/<%= post.post_media %>" type="video/mp4" class="storage-files">
+								</video>
+							</div>
+						</div>
+					<% } %>
+				<% } %>
+			<% }) %>
+		</div>
+	</div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Invite a user to view your calendar</h3>
+  		<form action="/onlineoffice/wall/<%= currentUser.id %>/invite" method="POST">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Invite</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

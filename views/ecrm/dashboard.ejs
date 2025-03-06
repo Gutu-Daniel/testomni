@@ -1,0 +1,112 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include ecrm-partials/navTabs %>
+	<hr>
+	<div class="content">
+		<p id="title">Dashboard</p>
+		<div class="row dashboard">
+			<div class="col-sm-5 col-md-5">
+				<div id="task">
+					<p id="add-task" class="float-right point-cursor" data-toggle="modal" data-target="#add-task-form"><i class="fa fa-plus-circle"></i> Add a new task</p>
+					<p class="sub-title">Today's Task</p>
+					<% if (tasks.length > 0) { %>
+						<ul class="task-list">
+							<% for (var i=0;i<tasks.length;i++) { %>
+								<hr>
+								<div class="task">
+									<form action="/office/deletetask/<%= tasks[i].id %>?_method=DELETE" method="POST">
+										<button class="btn btn-xs btn-danger float-right">Delete</button>
+									</form>
+									<p><input type="checkbox" class="task-status"> <%= tasks[i].title %> <span class="small-text">added: <%= tasks[i].date_time %></span></p>
+									<li class="task-list-description"><%= tasks[i].description%></li>
+								</div>
+							<% } %>
+						</ul>
+					<% } else { %>
+						<p>You don't have any tasks.</p>
+					<% } %>
+				</div>
+			</div>
+			<div class="col-sm-5 col-md-5">
+				<p class="sub-title">My Organization</p>
+				<ul>
+					<% orgs.forEach(function(org) { %>
+						<li><%= org.name %></li>
+					<% }) %>
+					<% if (orgs.length < 1) { %>
+						<li>Empty</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="col-sm-5 col-md-5">
+				<p class="sub-title">My Contacts</p>
+				<ul>
+					<% contacts.forEach(function(contact) { %>
+						<li><a href="https://siromni.com/office/contact/<%= contact.id %>"><%= contact.name %></a></li>
+					<% }) %>
+					<% if (contacts.length < 1) { %>
+						<li>Contacts are empty</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="col-sm-5 col-md-5">
+				<p class="sub-title">My Appointments/Calendar</p>
+				<ul>
+					<% events.forEach(function(event) { %>
+						<li><%= event.title %>: <span class="small-text"><%= event.start_time %> to <%= event.end_time %></span></li>
+					<% }) %>
+					<% if (events.length < 1) { %>
+						<li>No appointments</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="col-sm-5 col-md-5">
+				<p class="sub-title">My projects</p>
+				<ul>
+					<% projects.forEach(function(project) { %>
+						<li><a href="https://siromni.com/office/project/<%= project.id %>"><%= project.title %></a></li>
+					<% }) %>
+					<% if (projects.length < 1) { %>
+						<li>No projects</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="col-sm-5 col-md-5">
+				<p class="sub-title">My Messages</p>
+				<ul>
+					<% messages.forEach(function(message) { %>
+						<li><%= message.message %></li>
+					<% }) %>
+					<% if (messages.length < 1) { %>
+						<li>No messages</li>
+					<% } %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="add-task-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>New Task</h3>
+  		<form action="/office/addtask" method="POST">
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="title" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea type="text" name="description" class="form-control"></textarea>
+				</div>
+	  		<button class="btn btn-success margin-0-auto">Save Task</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include ecrm-partials/ecrmFooter %>

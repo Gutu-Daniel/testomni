@@ -1,0 +1,47 @@
+<% include backoffice/backoffice-partials/header.ejs %>
+<style>
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    
+</style>
+<div id="wrapper">
+    <div style="margin-top: 140px;" class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">Update Content</h2>
+            </div>
+            <div class="card-body">
+                <form action="/save-content" method="POST">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <label for="description" class="form-label">Terms and Conditions</label>
+                        <textarea name="terms" id="summernote" cols="30" rows="10" style="width:87%;"><%= introText1.content %></textarea> 
+                    </div>
+
+                    </div>
+                     <div class="row">
+                     <div class="col-md-12">
+                        <label for="description" class="form-label" style="display: block;">Privacy and Policy</label>
+                        <textarea name="policy" id="summernote" cols="30" rows="10" style="width:87%;"><%= introText2.content %></textarea> 
+                    </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% include backoffice/backoffice-partials/footer.ejs %>

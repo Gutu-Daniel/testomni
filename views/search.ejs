@@ -1,0 +1,274 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    
+      <!-- <form action="/search" method="POST" class="mb-4" id="searchForm">
+        <div class="row">
+          <div class="col-md-5 position-relative">
+            <input type="text" name="key" class="form-control" placeholder="search inside the platform" id="searchInput" autocomplete="off"  value="<%= searchKey %>">
+            <div id="suggestions" class="position-absolute w-100 bg-white shadow-sm rounded d-none" style="z-index: 1000; top: 100%;"></div>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </div>
+      </form> -->
+  <h4 class="mb-4 text-center">Search Results for "<%= searchKey %>"</h4>
+
+  <div class="row">
+    <% if (apps && apps.length > 0) { %>
+      <% 
+        // Group results by section and group
+        const backofficeMain = apps.filter(app => app.section === 'backoffice' && !app.group);
+        const backofficeSuggestions = apps.filter(app => app.section === 'backoffice' && app.group === 'suggestions');
+        const backofficeSetup = apps.filter(app => app.section === 'backoffice' && app.group === 'setup');
+        const officePages = apps.filter(app => app.section === 'office');
+        const onlineOfficePages = apps.filter(app => app.section === 'onlineoffice');
+        const settingsPages = apps.filter(app => app.section === 'settings');
+        const otherResults = apps.filter(app => !app.section && app.title !== 'Settings' && !app.route.includes('settings'));
+      %>
+
+      <% if (backofficeMain.length > 0) { %>
+        <div class="col-12 mb-4">
+          <h5>Backoffice</h5>
+          <div class="row">
+            <% backofficeMain.forEach(function(app) { %>
+              <div class="col-xs-6 col-sm-4 col-md-4">
+                <a href="/<%= app.route %>">
+                  <div class="circle settings-circle">
+                    <p><%= app.title %></p>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (backofficeSuggestions.length > 0) { %>
+        <div class="col-12 mb-4">
+          <h5>User Suggestions</h5>
+          <div class="row">
+            <% backofficeSuggestions.forEach(function(app) { %>
+              <div class="col-xs-6 col-sm-4 col-md-4">
+                <a href="/<%= app.route %>">
+                  <div class="circle settings-circle">
+                    <p><%= app.title %></p>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (backofficeSetup.length > 0) { %>
+        <div class="col-12 mb-4">
+          <h5>Site Setup</h5>
+          <div class="row">
+            <% backofficeSetup.forEach(function(app) { %>
+              <div class="col-xs-6 col-sm-4 col-md-4">
+                <a href="/<%= app.route %>">
+                  <div class="circle settings-circle">
+                    <p><%= app.title %></p>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (officePages.length > 0) { %>
+        <div class="col-12 mb-4">
+          <h5>Office</h5>
+          <div class="row">
+            <% officePages.forEach(function(app) { %>
+              <div class="col-xs-3 col-sm-2 col-md-2">
+                <a href="/<%= app.route %>">
+                  <div class="smaller-circle">
+                    <i class="fa <%= app.icon %> fa-3x home-icons" aria-hidden="true"></i>
+                    <div><%= app.title %></div>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (onlineOfficePages.length > 0) { %>
+        <div class="col-12 mb-4">
+          <h5>Online Office</h5>
+          <div class="row">
+            <% onlineOfficePages.forEach(function(app) { %>
+              <div class="col-xs-3 col-sm-2 col-md-2">
+                <a href="/<%= app.route %>">
+                  <div class="smaller-circle">
+                    <i class="fa <%= app.icon %> fa-3x home-icons" aria-hidden="true"></i>
+                    <div><%= app.title %></div>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (settingsPages.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="row">
+            <h5>Settings</h5>
+
+            <% settingsPages.forEach(function(app) { %>
+              <div class="col-xs-6 col-sm-4 col-md-4">
+                <a href="<%= currentUser.is_active != 1 ? 'javascript:' : '/' + app.route %>">
+                  <div class="circle settings-circle">
+                    <p><%= app.title %></p>
+                  </div>
+                </a>
+              </div>
+              <h5>Setting tabs</h5>
+
+              <% if (app.tabs.length > 0) { %>
+                <% app.tabs.forEach(function(tab) { %>
+                  <div class="col-xs-6 col-sm-4 col-md-4">
+                    
+                    <a href="<%= currentUser.is_active != 1 ? 'javascript:' : '/' + app.route %>">
+                      <div class="semi-circle" data-attribute="<%= tab.route %>">
+                        <p><%= tab.title %></p>
+                      </div>
+                    </a>
+                  </div>
+                <% }); %>
+              <% } %>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (otherResults.length > 0) { %>
+        <div class="col-12">
+          <h5>Apps and Pages</h5>
+          <div class="row">
+            <% otherResults.forEach(function(app) { %>
+              <div class="col-xs-6 col-sm-4 col-md-4">
+                <% if (app.isStatic) { %>
+                  <a href="<%= currentUser.is_active != 1 ? 'javascript:' : '/' + app.route %>">
+                    <div class="circle settings-circle">
+                      <p><%= app.title %></p>
+                    </div>
+                  </a>
+                <% } else { %>
+                  <% if (app.id === 1) { %>
+                    <a href="/<%= app.route %>/<%= currentUser.id %>">
+                      <div class="circle">
+                        <p><%= app.title %></p>
+                      </div>
+                    </a>
+                  <% } else if (app.id === 3 || app.id === 4) { %>
+                    <div class="circle outer-circle">
+                      <a href="/<%= app.route %>">
+                        <div class="inner-circle">
+                          <p class="small-text"><%= app.title %></p>
+                        </div>
+                      </a>
+                      <p>Opportunity</p>
+                    </div>
+                  <% } else { %>
+                    <a href="/<%= app.route %>">
+                      <div class="circle">
+                        <p><%= app.title %></p>
+                      </div>
+                    </a>
+                  <% } %>
+                <% } %>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+    <% } else { %>
+      <div class="col-12">
+        <p>No results found matching your search criteria.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="mt-4">
+    <a href="/" class="btn btn-secondary">Back to Home</a>
+  </div>
+</div>
+
+<div class="point-cursor" id="setup">
+  <a href="/setup" class="small-text">
+    <p>Site Instructions</p>
+  </a>
+</div>
+
+<%- include('partials/footer') %>
+
+  
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const suggestionsDiv = document.getElementById('suggestions');
+  const searchForm = document.getElementById('searchForm');
+  let debounceTimer;
+  
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    const searchTerm = e.target.value;
+    
+    if (searchTerm.length < 2) {
+      suggestionsDiv.classList.add('d-none');
+      return;
+    }
+  
+    debounceTimer = setTimeout(() => {
+      fetch(`/suggestions?key=${encodeURIComponent(searchTerm)}`)
+        .then(response => response.json())
+        .then(suggestions => {
+          if (suggestions.length > 0) {
+            suggestionsDiv.innerHTML = suggestions
+              .map(suggestion => `
+                <div class="suggestion-item p-2 cursor-pointer hover:bg-gray-100" 
+                     onclick="selectSuggestion('${suggestion}')">
+                  ${suggestion}
+                </div>
+              `).join('');
+            suggestionsDiv.classList.remove('d-none');
+          } else {
+            suggestionsDiv.classList.add('d-none');
+          }
+        });
+    }, 300);
+  });
+  
+  function selectSuggestion(suggestion) {
+    searchInput.value = suggestion;
+    suggestionsDiv.classList.add('d-none');
+    // Automatically submit the form when a suggestion is selected
+    searchForm.submit();
+  }
+  
+  // Close suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+      suggestionsDiv.classList.add('d-none');
+    }
+  });
+  </script>
+  
+  <style>
+  .suggestion-item {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+  }
+  .suggestion-item:last-child {
+    border-bottom: none;
+  }
+  .suggestion-item:hover {
+    background-color: #f8f9fa;
+  }
+  </style>

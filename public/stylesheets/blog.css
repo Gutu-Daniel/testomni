@@ -1,0 +1,17 @@
+.post-list {
+  width: 50%;
+  text-align: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 1px solid #d4d4d4;
+}
+
+.comment-list {
+  padding: 1rem;
+}
+
+.comments {
+  margin: 0 auto;
+  width: 50%;
+  text-align: center;
+}

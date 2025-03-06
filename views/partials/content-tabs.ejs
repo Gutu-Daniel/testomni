@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-xs-3 col-sm-3 col-md-3">
+		<% if (userInfo[0].profile_img) { %>
+			<% if (userInfo[0].profile_img_status == 6) { %>
+				<img class="profile-img content-page" id="rotate" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+			<% } else { %>
+				<img class="profile-img content-page" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+			<% } %>
+		<% } else { %>
+			<img class="profile-img content-page" src="/images/profile-imgs/default-profile.jpg %>" alt="profile image">
+		<% } %>
+		<div><%= currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) %> <%= currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) %></div>
+	</div>
+	<div class="col-xs-9 col-sm-9 col-md-9">
+		<div class="tabs">
+			<a href="/profile/<%= currentUser.id%>/about"><div class="smaller-circle"><p>About</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Friends</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Tell a Friend</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Apps</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Postings</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Photos & Videos</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/content"><div class="smaller-circle"><p>Last Used Apps</p></div></a>
+			<a href="/profile/<%= currentUser.id%>/settings"><div class="smaller-circle"><p>Settings</p></div></a>
+		</div>
+	</div>
+</div>

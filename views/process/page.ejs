@@ -1,0 +1,54 @@
+<% include ./partials/processHeader %>
+
+<div id="instructions">
+	<div id="instruction-text">
+		<p>Instructions</p>
+		<%= pagesInfo[0].instruction %>
+	</div>
+</div>
+
+<div style="margin-top: 140px;" class="container process page-page">
+	<p id="title"><%= pagesInfo[0].title %></p>
+	<p id="message"><%= pagesInfo[0].summary %></p>
+	<div>
+		<p><%= pagesInfo[0].content %></p>
+	</div>
+	<div>
+	</div>
+	<% if (pagesInfo[0].audio) { %>
+		<div>
+			<audio class="process-page-audio" controls>
+			  <source src="/process/audios/<%= pagesInfo[0].audio %>" type="audio/mp3">
+			</audio>
+		</div>
+	<% } %>
+	<% if (pagesInfo[0].image) { %>
+		<div class="process-page-image margin-0-auto">
+			<img class="photo" src="/process/images/<%= pagesInfo[0].image %>" alt="">
+		</div>
+	<% } %>
+	<% if (pagesInfo[0].video) { %>
+		<div>
+			<video class="process-page-video" controls>
+			  <source src="/process/videos/<%= pagesInfo[0].video %>" type="video/mp4">
+			</video>
+		</div>
+	<% } %>
+	<div class="user-qna">
+		<form action="/opportunity/page/<%= pagesInfo[0].name %>" method="POST">
+			<% for (var i=0;i<pagesInfo.length;i++) { %>
+				<div class="form-group">
+					<label for="answer<%=i+1%>"><%= pagesInfo[i].question %></label>
+					<textarea class="form-control" name="answer<%=i+1%>" rows="5"></textarea>
+				</div>
+			<% } %>
+			<button class="btn btn-success">Send</button>
+		</form>
+	</div>
+</div>
+
+<div class="point-cursor" id="instruction-handler">
+	<p class="small-text">Instructions</p>
+</div>
+
+<% include ./partials/processFooter %>

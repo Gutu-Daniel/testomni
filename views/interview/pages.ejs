@@ -1,0 +1,17 @@
+<% include ./partials/interviewHeader %>
+
+<div class="container process page-page">
+	<p id="title">Navigate to Pages</p>
+	<p id="message">You Unlocked</p>
+	<div>
+		<% for (var i=0;i<pagesInfo.length;i++) { -%>
+			<p><a href="/interview/page/<%= pagesInfo[i].name %>"><%= pagesInfo[i].name %></a></p>
+		<% } -%>
+	</div>
+	<p class="sub-title">Interview key</p>
+	<div class="form-group">
+		<input class="form-control app-keys" type="text" value="7" readonly>
+	</div>
+</div>
+
+<% include ./partials/footer %>

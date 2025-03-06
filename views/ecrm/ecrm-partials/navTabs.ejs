@@ -1,0 +1,68 @@
+<div class="row" id="nav-tabs">
+	<div class="col-xs-2 col-sm-2 col-md-2">
+		<% if (userInfo[0].profile_img) { %>
+			<% if (userInfo[0].profile_img_status == 6) { %>
+				<img class="nav-profile-img content-page" id="rotate profile-img" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+			<% } else { %>
+				<img class="nav-profile-img content-page" id="profile-img" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+			<% } %>
+		<% } else { %>
+			<img class="nav-profile-img content-page" id="profile-img" src="/images/profile-imgs/default-profile.jpg %>" alt="profile image">
+		<% } %>
+	</div>
+	<div class="col-xs-8 col-sm-9 col-md-9">
+		<div id="tabs">
+			<a href="/office/dashboard">
+				<div class="smallest-circle">
+					<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+					<div>Dashboard</div>
+				</div>
+			</a>
+			<a href="/office/organization">
+				<div class="smallest-circle">
+					<i class="fa fa-handshake-o fa-2x" aria-hidden="true"></i>
+					<div>Organization</div>
+				</div>
+			</a>
+			<a href="/office/contacts">
+				<div class="smallest-circle">
+					<i class="fa fa-address-book-o fa-2x" aria-hidden="true"></i>
+					<div>Contacts</div>
+				</div>
+			</a>
+			<a href="/office/calendar">
+				<div class="smallest-circle">
+					<i class="fa fa-calendar-check-o fa-2x" aria-hidden="true"></i>
+					<div>Calendar</div>
+				</div>
+			</a>
+			<a href="/office/projects">
+				<div class="smallest-circle">
+					<i class="fa fa-paper-plane-o fa-2x" aria-hidden="true"></i>
+					<div>Projects</div>
+				</div>
+			</a>
+			<a href="/office/inbox">
+				<div class="smallest-circle">
+					<i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+					<div>Inbox</div>
+				</div>
+			</a>
+			<a href="/office/whiteboard">
+				<div class="smallest-circle">
+					<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+					<div>Whiteboard</div>
+				</div>
+			</a>
+			<a href="/office/settings">
+				<div class="smallest-circle">
+					<i class="fa fa-cog fa-2x" aria-hidden="true"></i>
+					<div>Settings</div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-xs-2 col-sm-1 col-md-1 back-to-profile-main">
+		<a href="/office/home"><div id="close-sub-profiles"></div></a>
+	</div class="smallest-circle">
+</div>

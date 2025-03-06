@@ -1,0 +1,30 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+</div>
+
+<div class="container">
+  <div style="margin-bottom: 25px;">
+    <form>
+      <input type="hidden" name="dispay_name" value="<%= userInfo[0].first_name + ' ' + userInfo[0].last_name %>">
+      <input type="hidden" name="user_email" value="<%= userInfo[0].email %>">
+      <div class="form-group">
+        <label for="roomName">Room Name</label>
+        <input type="text" class="form-control" name="room_name" id="roomName" placeholder="Room Name">
+      </div>
+      <a href="#" class="btn btn-default" id="chatBtn">Start Meeting</a>
+    </form>
+  </div>
+</div>
+
+<div id="meet" style="text-align: center; padding-bottom: 100px; display: none; ">
+
+</div>
+
+
+<script src='https://meet.jit.si/external_api.js'></script>
+<script>
+
+</script>
+<% include crm-partials/crmFooter %>

@@ -1,0 +1,279 @@
+<% include ./backoffice-partials/header.ejs %>
+<style>
+	.navbar-collapse {
+    float: right;
+}
+.navbar-nav{
+	margin: 0;
+}
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+	.userList{
+margin-top: 10px;
+	background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: blacks;
+padding: 10px;
+	}
+	.section{
+		margin-top: 140px;
+	}
+</style>
+<div id="wrapper">
+	<% include ./backoffice-partials/tabs.ejs %>
+
+  <!-- Page Content -->
+  <div class="container">
+		<div class="section first all-users"> 
+			<p class="title">All Users</p>
+			<% allUsers.forEach(function(user) { %>
+				<% if (!user.is_superAdmin) { %>
+					<button class="btn btn-danger float-right" data-toggle="modal" data-target="#delete-user-form-<%= user.user_id%>"><i class="fa fa-close"></i></button>
+					<!-- modal start -->
+					<div class="modal" id="delete-user-form-<%= user.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog delete-user-form" role="document">
+					  	<div class="modal-content align-center">
+					  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+					  		<p>Are you sure you want to permenantly delete <%= user.username %>?</p>
+								<form action="/backoffice/deleteuser/<%= user.user_id %>?_method=DELETE" method="POST">
+									<button class="btn btn-danger">Delete</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- modal end -->
+				<% } %>
+				<% if (user.is_suspended) { %>
+					<% if (!user.is_superAdmin) { %>
+						<button class="btn btn-default float-right unsuspend-user" data-toggle="modal" data-target="#unsuspend-user-form-<%= user.user_id%>"><i class="fa fa-undo"></i></button>
+						<!-- modal start -->
+						<div class="modal" id="unsuspend-user-form-<%= user.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog delete-user-form" role="document">
+						  	<div class="modal-content align-center">
+						  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+						  		<p>Reactivate user: <%= user.username %>?</p>
+									<form action="/backoffice/activateuser/<%= user.user_id %>?_method=PUT" method="POST">
+										<button class="btn btn-default">Activate</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- modal end -->
+					<% } %>
+				<% } else { %>
+					<% if (!user.is_superAdmin) { %>
+						<button class="btn btn-default float-right suspend-user" data-toggle="modal" data-target="#suspend-user-form-<%= user.user_id%>"><i class="fa fa-hand-stop-o"></i></button>
+						<!-- modal start -->
+						<div class="modal" id="suspend-user-form-<%= user.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog delete-user-form" role="document">
+						  	<div class="modal-content align-center">
+						  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+						  		<p>Are you sure you want deactivate user: <%= user.username %>?</p>
+									<form action="/backoffice/deactivateuser/<%= user.user_id %>?_method=PUT" method="POST">
+										<button class="btn btn-default">Deactivate</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- modal end -->
+					<% } %>
+				<% } %>
+
+			<div class="userList">
+				<span class="small-text">User ID <%= user.user_id %>. </span>
+				<% if (user.profile_img) { %>
+					<% if (user.profile_img_status == 6) { %>
+						<img class="profile-img backoffice-img" id="rotate" src="/images/profile-imgs/<%= user.profile_img %>" alt="profile image">
+					<% } else { %>
+						<img class="profile-img backoffice-img" src="/images/profile-imgs/<%= user.profile_img %>" alt="profile image">
+					<% } %>
+				<% } else { %>
+					<img class="profile-img backoffice-img" src="/images/profile-imgs/default-profile.jpg %>" alt="profile image">
+				<% } %>
+				<a href="/profile/<%= user.id %>"><%= user.username%></a><span class="small-text"> user referral code: <%= user.user_code%></span>, <span class="small-text"> referred to site by: <%= user.referrer%></span></div>
+			 <% }) %>
+		 </div> 
+		<div class="section point-system"> 
+			<p class="title">Point System</p>
+			<% allUsers.forEach(function(user) { %>
+				<div class="userList"><span class="small-text">User ID <%= user.user_id %>. </span>
+				<% if (user.profile_img) { %>
+					<% if (user.profile_img_status == 6) { %>
+						<img class="profile-img backoffice-img" id="rotate" src="/images/profile-imgs/<%= user.profile_img %>" alt="profile image">
+					<% } else { %>
+						<img class="profile-img backoffice-img" src="/images/profile-imgs/<%= user.profile_img %>" alt="profile image">
+					<% } %>
+				<% } else { %>
+					<img class="profile-img backoffice-img" src="/images/profile-imgs/default-profile.jpg %>" alt="profile image">
+				<% } %>
+				<a href="/profile/<%= user.id %>"><%= user.username%></a><span class="small-text"> points: <%= user.points %></span></div>
+			<% }) %>
+		</div> 
+		<div class="section process"> 
+			<p class="title">Prospects</p>
+			<% prospects.forEach(function(prospect) { %>
+				<div><span class="small-text">User ID <%= prospect.user_id %>. </span>
+				<a href="/profile/<%= prospect.id %>"><%= prospect.username%></a><span class="small-text"> page: <%= prospect.latest_unlock_page_id %></span> <span class="small-text"> Latest step: <%= prospect.name %></span> <span class="small-text"> Referred to process by: <%= prospect.referrer %></span></div>
+			<% }) %>
+		</div>   
+		<div class="section process-crm"> 
+			<p class="title">Process CRM</p>
+			<% crmUsers.forEach(function(crmUser) { %>
+				<div><span class="small-text">User ID <%= crmUser.user_id %>. </span>
+				<a href="/profile/<%= crmUser.id %>"><%= crmUser.username%></a><span class="small-text"> Referred to process crm by: <%= crmUser.referrer %></span></div>
+			<% }) %>
+			<hr>
+			<p class="sub-title">Community Tasks</p>
+			<span class="point-cursor" data-toggle="modal" data-target="#create-community-task-form"><i class="fa fa-plus-circle"></i> Create a community task</span>
+			<span class="point-cursor float-right" data-toggle="modal" data-target="#delete-community-task-form"><i class="fa fa-minus-circle"></i> Delete a community task</span>
+			<% if (comTasks.length > 0) { %>
+				<% comTasks.forEach(function(task, index) { %>
+					<form class="padding-2" action="/backoffice/editcommunitytask/<%= task.id %>?_method=PUT" method="POST">
+						<p>Task <%= index + 1 %></p>
+						<div class="form-group">
+							<label for="title">Title</label>
+							<input type="text" name="name" class="form-control" value="<%= task.name %>">
+						</div>
+						<div class="form-group">
+							<label for="description">Description</label>
+							<textarea type="text" name="description" class="form-control"><%= task.description %></textarea>
+						</div>
+						<button class="btn btn-success">Save Tasks</button>
+					</form>
+				<% }) %>
+			<% } else { %>
+				<p>No community tasks</p>
+			<% } %>
+		</div> 
+		<div class="section office-crm"> 
+			<p class="title">Office CRM</p>
+			<% ecrmUsers.forEach(function(ecrmUser) { %>
+				<div><span class="small-text">User ID <%= ecrmUser.user_id %>. </span>
+				<a href="/profile/<%= ecrmUser.id %>"><%= ecrmUser.username%></a> <span class="small-text"> Referred to process crm by: <%= ecrmUser.referrer %></span></div>
+			<% }) %>
+		</div> 
+	
+		<div class="section profile-app"> 
+			<p class="title">Profile Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 1) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>    
+		<div class="section points-app"> 
+			<p class="title">Points Feedback</p>
+			<p>Coming soon</p>
+		</div> 
+		<div class="section process-app"> 
+			<p class="title">Process Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 3) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>
+		<div class="section crm-app"> 
+			<p class="title">Process CRM Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 4) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>
+		<div class="section ecrm-app"> 
+			<p class="title">Office CRM Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 5) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>   
+		<div class="section link-store-app"> 
+			<p class="title">Link Store Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 6) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>  
+		<div class="section interview-app"> 
+			<p class="title">Interview Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 7) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>  
+		<div class="section storage-app"> 
+			<p class="title">Storage Feedback</p>
+			<% userFeedbacks.forEach(function(feedback) { %>
+				<% if (feedback.app_id == 8) { -%>
+					<p><%= feedback.title %> app <span class="small-text">(From: <%= feedback.username %>)</span>: <%= feedback.feedback %></p>
+				<% } -%>
+			<% }) %>
+		</div>  
+  </div>
+  <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<!-- modal start -->
+<div class="modal" id="create-community-task-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content backoffice-overlay">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Create a new daily task for the community</h3>
+  		<form action="/backoffice/createcommunitytask" method="POST">
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea type="text" name="description" class="form-control"></textarea>
+				</div>
+	  		<button class="btn btn-success margin-0-auto">Create Task</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="delete-community-task-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content backoffice-overlay">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Delete tasks</h3>
+			<% comTasks.forEach(function(task) { %>
+			<div>
+				<span class="display-inline"><%= task.name %></span>
+	  		<form class="display-inline" action="/backoffice/deletecommunitytask/<%= task.id%>?_method=DELETE" method="POST">
+		  		<button class="btn btn-default btn-sm">X</button>
+		  	</form>
+		  </div>
+		  <br>
+			<% }) %>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+
+<% include ./backoffice-partials/footer.ejs %>

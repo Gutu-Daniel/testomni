@@ -1,0 +1,117 @@
+<% include linkstore-partials/linkstoreHeader %>
+
+<div class="container crm home">
+  <p id="title">You are inside folder: <%= folder[0].title%></p>
+  <% if (currentUser.id === folder[0].leader_id) { %>
+  <p class="float-right point-cursor" data-toggle="modal" data-target="#add-user-form"><i class="fa fa-plus-circle"></i> Add User</p>
+  <% } %>
+  <p class="sub-title">Current Users</p>
+  <ul>
+    <% folder.forEach(function(f, i) { %>
+    <% if (i !== 0) { -%>
+    <% if (f.leader_id == currentUser.id) { -%>
+    <li><%= f.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= f.user_id%>">x</button></li>
+    <% } else { -%>
+    <li><%= f.username %></li>
+    <% } -%>
+    <!-- modal start -->
+    <div class="modal" id="remove-user-form-<%= f.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+          <p class="sub-title">Are you sure you want to remove <%= f.username %></p>
+          <form action="/linkstore/<%= f.folder_id %>/removeUser?_method=DELETE" method="POST">
+            <button class="btn btn-danger" name="user_id" value="<%= f.user_id %>">Remove</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- modal end -->
+    <% } else { -%>
+    <li><%= f.username %> - <span class="small-text">owner</span></li>
+    <% } -%>
+    <% }) %>
+  </ul>
+  <hr>
+  <% if (currentUser.id === folder[0].leader_id) { %>
+  <p class="float-right point-cursor" data-toggle="modal" data-target="#create-links-form"><i class="fa fa-plus-circle"></i> Create Links</p>
+  <% } %>
+  <p class="sub-title">Links</p>
+  <div class="row">
+    <% links.forEach(function(link) { %>
+      <div class="col-xs-3 col-sm-2 col-md-2">
+        <span >
+          <div class="smaller-circle">
+            <p>
+              <% 
+                // Check if the URL starts with http:// or https://
+                var url = link.url;
+                if (!/^https?:\/\//i.test(url)) {
+                  url = 'http://' + url;
+                }
+              %>
+              <a href="<%= url %>" target="_blank"><%= link.title %></a>
+            </p>
+            <form style="display: inline;" method="post" action="/linkstore/<%= folder[0].folder_id %>/deleteLink/<%= link.link_id %>?_method=DELETE">
+              <button type="submit" class="delete-btn"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></button>
+            </form>
+          </div>
+        </span>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+
+<!-- modal start -->
+<div class="modal" id="add-user-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+      <p class="sub-title">Add User to <%= folder[0].title %></p>
+      <form action="/linkstore/<%= folder[0].folder_id %>/adduser" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" class="form-control">
+        </div>
+        <button class="btn btn-success margin-0-auto">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+
+<!-- modal start -->
+<div class="modal" id="create-links-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+      <p class="sub-title">New Folder</p>
+      <form action="/linkstore/<%= folder[0].folder_id %>/createlink" method="POST">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" name="title" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="url">Url</label>
+          <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2">
+              <select name="protocol">
+                <option>http</option>
+                <option>https</option>
+              </select>
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-10">
+              <textarea type="text" name="url" class="form-control" placeholder="ex: google.com"></textarea>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-success margin-0-auto">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+<% include linkstore-partials/linkstoreFooter %>

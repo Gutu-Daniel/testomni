@@ -1,0 +1,27 @@
+<% include ./partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include ./partials/profile-content-tabs.ejs %>
+
+		<div class="content-tabs">
+			<div class="semi-circle semi-circle-select" data-attribute="refer"><p>Refer a Friend</p></div>
+		</div>
+		<div class="content">
+			<div class="settings">
+				<h1>Invite a Friend</h1>
+			</div>
+			<div class="section first refer">
+				<p class="sub-title">Refer a Friend</p>
+				<a href="https://siromni.com/payment">Sign up User</a>
+				<p>or send below link</p>
+				<div class="form-group">
+					<input class="form-control" type="text" value="http://<%= hostname %>/signup/<%= currentUser.username %>" readonly>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ./partials/footer %>

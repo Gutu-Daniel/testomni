@@ -1,0 +1,44 @@
+<% include linkstore-partials/linkstoreHeader %>
+
+<div class="container crm home">
+	<p id="title">Welcome to your link store, <%= currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) %></p>
+	<p id="message">Organize and share!</p>
+	<hr>
+	<p class="float-right point-cursor" data-toggle="modal" data-target="#create-folder-form"><i class="fa fa-plus-circle"></i> Create Folder</p>
+	<p class="sub-title">Folders</p>
+	<div class="row">
+		<% folders.forEach(function(folder) { %>
+			<div class="col-xs-3 col-sm-2 col-md-2">
+				<a href="/linkstore/<%= folder.folder_id %>">
+					<div class="smaller-circle">
+						<p><%= folder.title %></p>
+						<form style="display: inline;" method="post" action="/linkstore/<%= folder.folder_id %>?_method=DELETE">
+						  <button type="submit" class="delete-btn"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></button>
+						</form>
+					</div>
+				</a>
+			</div>
+		<% }) %>
+	</div>
+</div>
+
+
+<!-- modal start -->
+<div class="modal" style="margin-top: 140px;" id="create-folder-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>New Folder</h3>
+  		<form action="/linkstore/createfolder" method="POST">
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="title" class="form-control">
+				</div>
+	  		<button class="btn btn-success margin-0-auto">Create</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include linkstore-partials/linkstoreFooter %>

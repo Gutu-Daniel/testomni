@@ -1,0 +1,33 @@
+<% include partials/header %>
+
+<div class="container blog page">
+  <% include ../profile/partials/profile-content-tabs.ejs %>
+  <a class="float-right" href="/blog/<%= post.user_id %>"><span><< Back to Blogs</span></a>
+  <% if (post.user_id === currentUser.id) { -%>
+    <form action="/blog/<%= post.user_id %>/post/<%= post.id %>?_method=DELETE" method="POST">
+      <button class="btn btn-danger">Delete Post</button>
+    </form>
+    <a href="/blog/<%= post.user_id %>/post/<%= post.id %>/edit"><button class="btn btn-warning">Edit Post</button></a>
+  <% } -%>
+  <p class="sub-title"><%= post.title %></p>
+  <p class="small-text"><%= post.created_at %></p>
+  <p><%= post.body %></p>
+
+  <div class="comments">
+    <form action="/blog/<%= post.user_id %>/post/<%= post.id %>/comment" method="POST">
+      <div class="form-group">
+        <input type="text" class="form-control" name="comment" placeholder="Add Comment">
+        <button class="btn btn-default">Add</button>
+      </div>
+    </form>
+    <% comments.reverse().forEach(function(comment) { %>
+      <div class="comment-list">
+        <p><%= comment.username %></p>
+        <p><%= comment.created_at %></p>
+        <p><%= comment.comment %></p>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<% include partials/footer %>

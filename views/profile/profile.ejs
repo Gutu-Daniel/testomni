@@ -1,0 +1,142 @@
+<% include ./partials/header.ejs %>
+
+	<div style="margin-top: 140px;" class="profile">
+		<% include ../partials/profile-top.ejs %>
+			<div style="margin-top: 0;" class="container">
+				<div id="profile-name">
+					<%= userInfo[0].first_name.charAt(0).toUpperCase() + userInfo[0].first_name.slice(1) %>
+						<%= userInfo[0].last_name.charAt(0).toUpperCase() + userInfo[0].last_name.slice(1) %>
+							<% if (currentUser.id !=userInfo[0].user_id) { %>
+								<form action="/profile/<%= userInfo[0].user_id %>/friendrequest" method="POST">
+									<button class="btn btn-default">Friend Request</button>
+								</form>
+								<% } %>
+				</div>
+				<!-- <div class="content row">
+			<div class="col-sm-4 col-md-4">
+				<div class="about">
+					<div class="smaller-circle">
+						<p>About</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/about.jpg %>" alt="About snapshot"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/about"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+				<div class="friends">
+					<div class="smaller-circle">
+						<p>Friends</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/friends.jpg %>" alt="Friends Snapshot"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/friends"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+				<div class="invite-a-friend">
+					<div class="smaller-circle">
+						<p>Invite a Friend</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/inviteafriend.jpg %>" alt="Invite a Friend"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/invitefriend"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-md-4">
+				<div class="postings">
+					<div class="smaller-circle">
+						<p>Postings</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/postings.jpg %>" alt="Postings"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/wall"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-sm-4 col-md-4">
+				<div class="photos-videos">
+					<div class="smaller-circle">
+						<p>Photos & Videos</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/photosandvideos.jpg %>" alt="Photos & Videos"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/media"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+				<div class="last-used-apps">
+					<div class="smaller-circle">
+						<p>Last Used Apps</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/lastusedapps.jpg %>" alt="Last Used Apps"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/content"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+				<div class="settings">
+					<div class="smaller-circle">
+						<p>Settings</p>
+						<div class="hidden-content">
+							<p><img class="preview-snapshot" src="/images/snapshots/settings.jpg %>" alt="Settings"></p>
+							<a href="/profile/<%= userInfo[0].user_id%>/settings"><button class="btn btn-primary">More</button></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+				<div class="row">
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/about">
+							<div class="circle backoffice-circle">
+								<p> <span> About</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/friends">
+							<div class="circle backoffice-circle">
+								<p> <span> Friends</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/invitefriend">
+							<div class="circle backoffice-circle">
+								<p> <span> Invite Friends</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/wall">
+							<div class="circle backoffice-circle">
+								<p> <span> Postings</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/media">
+							<div class="circle backoffice-circle">
+								<p> <span> Photos & Videos</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/content">
+							<div class="circle backoffice-circle">
+								<p> <span> Last Used Apps</span></p>
+							</div>
+						</a>
+					</div>	
+					<div class="col-xs-6 col-sm-4 col-md-4">
+						<a href="/profile/<%= userInfo[0].user_id%>/settings">
+							<div class="circle backoffice-circle">
+								<p> <span> Settings</span></p>
+							</div>
+						</a>
+					</div>	
+						
+				</div>
+			</div>
+	</div>
+
+	<% include ./partials/footer %>

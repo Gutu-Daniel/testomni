@@ -1,0 +1,70 @@
+<% include ./partials/header %>
+
+<div class="profile">
+	<div class="container">
+		
+		<% include ./partials/profile-top.ejs %>
+
+		<div class="content-tabs">
+			<div class="semi-circle" data-attribute="profile-img"><p>Profile Image</p></div>
+			<div class="semi-circle" data-attribute="account-info"><p>Account Info</p></div>
+			<div class="semi-circle semi-circle-select" data-attribute="refer"><p>Tell a Friend</p></div>
+		</div>
+		<div class="content">
+			<div class="section profile-img">
+				<p class="sub-title">Profile Image</p>
+				<form action="/profile/<%= currentUser.id %>/profileimg" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<input type="text" name="orientation" id="profile_orientation">
+						<label for="profile-img">Upload Profile Image</label>
+						<input class="margin-0-auto" type="file" name="file" id="file-input">
+						<input class="btn btn-default btn-sm upload-btn" type="submit" value="Upload">
+					</div>
+				</form>
+			</div>
+			<div class="section account-info">
+				<p class="sub-title">Your Account Information</p>
+				<form class="edit-profile-info margin-0-auto" action="/profile/<%= userInfo[0].user_id %>/editprofile?_method=PUT" method="POST">
+					<div class="form-group">
+						<label for="first_name">First Name:</label>
+						<input type="text" name="first_name" class="form-control" value="<%= userInfo[0].first_name %>">
+					</div>
+					<div class="form-group">
+						<label for="last_name">Last Name:</label>
+						<input type="text" name="last_name" class="form-control" value="<%= userInfo[0].last_name %>">
+					</div>
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="text" name="email" class="form-control" value="<%= userInfo[0].email %>">
+					</div>
+					<button class="btn btn-success">Save</button>
+				</form>
+			</div>
+			<div class="section first refer">
+				<p class="sub-title">Invite a friend to join Omnilives.com</p>
+				<form action="/refer/<%= currentUser.id %>" method="POST">
+					<div class="form-group">
+						<label for="friend_name">Friend's Name</label>
+						<input type="text" class="form-control" name="friend_name" required>
+					</div>
+					<div class="form-group">
+						<label for="friend_email">Friend's Email</label>
+						<input type="text" class="form-control" name="friend_email" required>
+					</div>
+					<div class="form-group">
+						<label for="your_email">Your Email</label>
+						<input type="text" class="form-control" name="your_email" required>
+					</div>
+					<div class="form-group">
+						<label for="mesage">Message(optional)</label>
+						<textarea class="form-control" name="message"></textarea>
+					</div>
+					<button class="btn btn-primary">Send Registration</button>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ./partials/footer %>

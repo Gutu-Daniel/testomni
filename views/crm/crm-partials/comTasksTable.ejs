@@ -1,0 +1,57 @@
+<table id="comtasksTable">
+  <thead>
+    <tr>
+      <th class="each-task">Community Tasks</th>
+      <% filteredDays.forEach(function(date) { %>
+        <th class="each-task">
+          <%= date %>
+        </th>
+      <% }) %>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% 
+      const currentDate = new Date(); // Get current date
+      const formattedCurrentDate = (currentDate.getMonth() + 1) + '/' + currentDate.getDate() + '/' + currentDate.getFullYear(); // Format as MM/DD/YYYY
+    %>
+    
+    <% taskNames.forEach(function(taskName) { %>
+    <tr>
+      <td class="each-task">
+        <%= taskName %> 
+      </td>
+      <% filteredDays.forEach(function(filterDay) { %>
+      <% var is_checkbox = false; %>
+      <% comTasks.forEach(function(task) { %>
+
+      <% 
+        // Assuming filterDay is already in MM/DD/YYYY format, no need for new Date(filterDay)
+      %>
+        
+      <% if (task.task_date == filterDay && task.name == taskName) { %>
+        <% is_checkbox = true; %>
+        <td class="each-task each-task-cell">
+          <% 
+            // Disable the checkbox if the filterDay is not today's date
+            var isDisabled = filterDay !== formattedCurrentDate ? 'disabled' : '';  
+          %>
+          <input type="checkbox" 
+                 data-id="<%= task.user_tasks_id %>" 
+                 class="task-checkbox" 
+                 <%= task.completed == 1 ? 'checked' : '' %> 
+                 <%= isDisabled %> 
+          >
+        </td>
+      <% } %>
+      <% }) %>
+      <% if (!is_checkbox) { %>
+        <td class="each-task">
+          &nbsp;
+        </td>
+      <% } %>
+      <% }) %>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>

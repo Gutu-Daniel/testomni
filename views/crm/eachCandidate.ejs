@@ -1,0 +1,283 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include crm-partials/navTabs %>
+	<hr>
+	<a href="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>" class="float-right"> << Return to pipeline</a>
+	<span class="small-text">Created on: <%= candidate[0].created_at%></span>
+	<p id="title"><%= candidate[0].title %></p>
+	<% if (currentUser.id === candidate[0].leader_id) { %>
+		<form method="post" action="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/<%= candidate[0].id %>?_method=DELETE">
+			<button type="button" class="btn btn-danger btn-sm float-right" data-toggle="modal" data-target="#confirm-delete-candidate-modal" data-candidate-id="<%= candidate[0].id %>">Delete candidate</button>
+		</form>
+	<% } %>
+	<% if (currentUser.id === candidate[0].leader_id) { %>
+		<p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+	<% } %>
+
+	<p>Current Users in candidate</p>
+	<ul>
+		<% candidate.forEach(function(c, i) { %>
+			<% if (i !== 0) { -%>
+				<% if (c.leader_id == currentUser.id) { -%>
+					<li><%= c.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= c.user_id%>">x</button></li>
+				<% } else { %>
+					<li><%= c.username %></li>
+				<% } %>
+				<!-- modal start -->
+				<div class="modal" id="remove-user-form-<%= c.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+				  	<div class="modal-content">
+				  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+							<p class="sub-title">Are you sure you want to remove <%= c.username %></p>
+				  		<form action="/onlineoffice/project/<%= projectId %>/pipeline/<%= c.pipeline_id %>/candidate/<%= c.candidate_id %>/remove?_method=DELETE" method="POST">
+					  		<button class="btn btn-danger" name="user_id" value="<%= c.user_id %>">Remove</button>
+					  	</form>
+						</div>
+					</div>
+				</div>
+				<!-- modal end -->
+			<% } else { %>
+				<li><%= c.username %> - <span class="small-text">owner</span></li>
+			<% } %>
+		<% }) %>
+	</ul>
+
+	<hr>
+
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<div class="candidate-notes">
+				<p class="sub-title">Notes</p>
+				<hr>
+				<div class="wall">
+					<% for (var i=notes.length-1;i>=0;i--) { %>
+						<div class="each-post">
+							<form action="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/<%= candidate[0].candidate_id %>/deletenote/<%= notes[i].id %>?_method=DELETE" method="POST">
+								<button class="btn btn-xs btn-danger float-right">Delete</button>
+							</form>
+							<span class="small-text"><%= notes[i].date_time %></span><br>
+							<strong><%= notes[i].username %>: </strong><%= notes[i].post %>
+						</div>
+						<hr>
+					<% } %>
+					<form action="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/<%= candidate[0].candidate_id %>/addnote" method="POST">
+						<div class="form-group form-cust">
+							<textarea col="12" class="form-control" name="note" placeholder="Make a note" required></textarea>
+							<button class="btn btn-primary">Post</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<p class="sub-title">Uploads</p>
+			<hr>
+			<div class="pipeline-uploads">
+				<form action="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/<%= candidate[0].candidate_id %>/uploadfile" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<input type="file" name="file" id="file">
+						<input class="btn btn-primary" type="submit" value="Upload">
+					</div>
+				</form>
+			</div>
+			<% for (var i=0;i<uploads.length;i++) { %>
+				<embed src="/crm/uploads/<%= uploads[i].file_name %>" type="application/pdf">
+			<% } %>
+		</div>
+	</div>
+
+	<hr>
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<form action="/onlineoffice/candidate/<%= candidate[0].id %>/movecandidate?_method=PUT" method="POST">
+				<p class="sub-title">Next Step</p>
+					<select class="selectpicker" name="pipeline_id">
+						<% pipelines.forEach(function(pipeline) { %>
+							<option value="<%= pipeline.id%>"><%= pipeline.title%></option>
+						<% }) %>
+					</select>
+					<button class="btn btn-primary">Move</button>
+			</form>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<% if (currentUser.id === candidate[0].leader_id) { %>
+				<p class="point-cursor float-right" data-toggle="modal" data-target="#about-candidate-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Candidate info</p>
+			<% } %>
+			<span class="point-cursor sub-title" data-toggle="modal" data-target="#about-candidate"><i class="fa fa-user" aria-hidden="true"></i> Read about candidate</span>
+		</div>
+	</div>
+	
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Invite a user to candidate <%= candidate[0].title %></h3>
+  		<form action="/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/<%= candidate[0].id %>/invite" method="POST">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Invite</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="add-candidate-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Create a New candidate</h3>
+  		<form action="/onlineoffice/project/<%= projectId %>/candidate/<%= candidate[0].id %>/createcandidate" method="POST">
+				<div class="form-group">
+					<label for="title">Name</label>
+					<input type="text" name="title" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Create candidate</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="about-candidate" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>About candidate</h3>
+  		<div class="row">
+  			<div class="col-sm-6 col-md-6">
+  				<p>How did you meet them?</p>
+  				<p class="small-text"><%= candidate[0].ca1 %></p>
+  				<p>What quality about them left an impression?</p>
+  				<p class="small-text"><%= candidate[0].ca2 %></p>
+  				<p>Where is their family from?</p>
+  				<p class="small-text"><%= candidate[0].ca3 %></p>
+  				<p>What is their occupation/career/job?</p>
+  				<p class="small-text"><%= candidate[0].ca4 %></p>
+  				<p>Do they work a 9 to 5?</p>
+  				<p class="small-text"><%= candidate[0].ca5 %></p>
+  			</div>
+  			<div class="col-sm-6 col-md-6">
+  				<p>When is their day off?</p>
+  				<p class="small-text"><%= candidate[0].ca6 %></p>
+  				<p>Do they play any sports?</p>
+  				<p class="small-text"><%= candidate[0].ca7 %></p>
+  				<p>What is their motivation?</p>
+  				<p class="small-text"><%= candidate[0].ca8 %></p>
+  				<p>What are their wants, needs, desire?</p>
+  				<p class="small-text"><%= candidate[0].ca9 %></p>
+  				<p>Are they keeping their options open?</p>
+  				<p class="small-text"><%= candidate[0].ca10 %></p>
+  			</div>
+  		</div>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="about-candidate-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>About Candidate</h3>
+  		<form action="/onlineoffice/candidate/<%= candidate[0].id %>/aboutcandidate?_method=PUT" method="POST">
+  			<div class="row">
+  				<div class="col-sm-6 col-md-6">
+  					<div class="form-group">
+							<label for="ca1">How did you meet them?</label>
+							<input type="text" name="ca1" class="form-control" value="<%= candidate[0].ca1 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca2">What quality about them left an impression?</label>
+							<input type="text" name="ca2" class="form-control" value="<%= candidate[0].ca2 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca3">Where is their family from?</label>
+							<input type="text" name="ca3" class="form-control" value="<%= candidate[0].ca3 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca4">What is their occupation/career/job?</label>
+							<input type="text" name="ca4" class="form-control" value="<%= candidate[0].ca4 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca5">Do they work a 9 to 5?</label>
+							<input type="text" name="ca5" class="form-control" value="<%= candidate[0].ca5 %>">
+						</div>
+  				</div>
+  				<div class="col-sm-6 col-md-6">
+  					<div class="form-group">
+							<label for="ca6">When is their day off?</label>
+							<input type="text" name="ca6" class="form-control" value="<%= candidate[0].ca6 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca7">Do they play any sports?</label>
+							<input type="text" name="ca7" class="form-control" value="<%= candidate[0].ca7 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca8">What is their motivation?</label>
+							<input type="text" name="ca8" class="form-control" value="<%= candidate[0].ca8 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca9">What are their wants, needs, desire?</label>
+							<input type="text" name="ca9" class="form-control" value="<%= candidate[0].ca9 %>">
+						</div>
+						<div class="form-group">
+							<label for="ca10">Are they keeping their options open?</label>
+							<input type="text" name="ca10" class="form-control" value="<%= candidate[0].ca10 %>">
+						</div>
+  				</div>
+  			</div>
+	  		<button class="btn btn-success">Save</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-delete-candidate-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteCandidateModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="confirmDeleteCandidateModalLabel">Confirm Deletion</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  Are you sure you want to delete this candidate?
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		  <form id="delete-candidate-form" method="POST" style="display: inline;">
+			<input type="hidden" name="_method" value="DELETE">
+			<button type="submit" class="btn btn-danger">Delete</button>
+		  </form>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <!-- Confirmation Modal End -->
+  
+<% include crm-partials/crmFooter %>
+
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	  $('#confirm-delete-candidate-modal').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget);
+		var candidateId = button.data('candidate-id');
+		var form = document.getElementById('delete-candidate-form');
+		form.action = '/onlineoffice/project/<%= projectId %>/pipeline/<%= candidate[0].pipeline_id %>/candidate/' + candidateId + '?_method=DELETE';
+	  });
+	});
+  </script>

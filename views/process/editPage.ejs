@@ -1,0 +1,91 @@
+<% include ./partials/processHeader %>
+
+<div style="margin-top: 140px;" class="container process page-page">
+	<p id="title">Backoffice</p>
+	<p id="message">Edit  <%= pageInfo[0].name %> page</p>
+	<div class="create-page">
+		<form action="/opportunity/backoffice/<%= pageInfo[0].name %>/audio?_method=PUT" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="profile-img">Audio</label>
+				<input type="file" name="file" id="file">
+				<button class="btn btn-default btn-sm upload-btn" type="submit">Upload Audio</button>
+			</div>
+		</form>
+		<form action="/opportunity/backoffice/<%= pageInfo[0].name %>/image?_method=PUT" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="profile-img">Image</label>
+				<input type="file" name="file" id="file">
+				<button class="btn btn-default btn-sm upload-btn" type="submit">Upload Image</button>
+			</div>
+		</form>
+		<form action="/opportunity/backoffice/<%= pageInfo[0].name %>/video?_method=PUT" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="profile-img">Video</label>
+				<input type="file" name="file" id="file">
+				<button class="btn btn-default btn-sm upload-btn" type="submit">Upload Video</button>
+			</div>
+		</form>
+		<form action="/opportunity/backoffice/<%= pageInfo[0].name %>?_method=PUT" method="POST">
+			<div class="form-group">
+				<label for="name">Route Name:</label>
+				<input class="form-control" type="text" name="name" placeholder="Currently Empty. No whitespace. Letters and numbers only." value="<%= pageInfo[0].name %>" readonly>
+			</div>
+			<div class="form-group">
+				<label for="mc_question">Multiple choice Question:</label>
+				<input class="form-control" type="text" name="mc_question" placeholder="No whitespace. Letters and numbers only." value="<%= pageInfo[0].mc_question %>">
+			</div>
+			<div class="form-group">
+				<label for="a">Choice a:</label>
+				<input class="form-control" type="text" name="a" value="<%= pageInfo[0].a %>">
+			</div>
+			<div class="form-group">
+				<label for="b">Choice b:</label>
+				<input class="form-control" type="text" name="b" value="<%= pageInfo[0].b %>">
+			</div>
+			<div class="form-group">
+				<label for="c">Choice c:</label>
+				<input class="form-control" type="text" name="c" value="<%= pageInfo[0].c %>">
+			</div>
+			<div class="form-group">
+				<label for="d">Choice d:</label>
+				<input class="form-control" type="text" name="d" value="<%= pageInfo[0].d %>">
+			</div>
+			<div class="form-group">
+				<label for="correct_answer">Correct Answer:</label>
+				<input class="form-control" type="text" name="correct_answer" value="<%= pageInfo[0].correct_answer %>">
+			</div>
+			<div class="form-group">
+				<label for="title">Page Title:</label>
+				<input class="form-control" type="text" name="title" placeholder="Currently Empty" value="<%= pageInfo[0].title %>">
+			</div>
+			<div class="form-group">
+				<label for="summary">Page summary:</label>
+				<textarea class="form-control" type="text" name="summary" rows="4" placeholder="Currently Empty"><%= pageInfo[0].summary %></textarea>
+			</div>
+			<div class="form-group">
+				<label for="content">Page Content:</label>
+				<textarea class="form-control" type="text" name="content" rows="4" placeholder="Currently Empty"><%= pageInfo[0].content %></textarea>
+			</div>
+			<div class="form-group">
+				<label for="instruction">Page Instruction:</label>
+				<textarea class="form-control" type="text" name="instruction" rows="4" placeholder="Currently Empty"><%= pageInfo[0].instruction %></textarea>
+			</div>
+			<% if (pageInfo.length > 1) { %>
+				<% pageInfo.forEach(function(info, index) { %>
+					<div class="form-group">
+						<label for="question">Question <%= index + 1 %>:</label>
+						<textarea class="form-control" type="text" name="question[<%= index + 1 %>]" rows="4" placeholder="Currently Empty"><%= info.question %></textarea>
+					</div>
+				<% }) %> 
+			<% } else { %>
+				<div class="form-group">
+						<label for="question">Question:</label>
+						<textarea class="form-control" type="text" name="question" rows="4" placeholder="Currently Empty"><%= pageInfo[0].question %></textarea>
+					</div>
+			<% } %>
+			<button class="btn btn-success">Save</button>
+		</form>
+	</div>
+</div>
+
+<% include ./partials/processFooter %>

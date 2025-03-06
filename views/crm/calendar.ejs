@@ -1,0 +1,289 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+    <% include crm-partials/navTabs %>
+    <hr>
+    <p id="title">
+        <%= calendarOwner.first_name.charAt(0).toUpperCase() + calendarOwner.first_name.slice(1) %>'s Calendar
+    </p>
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <% if (isLeader) { %>
+                <p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+            <% } %>
+            <ul>
+                <li>
+                    <%= calendarOwner.username %> <span class="small-text">owner</span>
+                </li>
+                <% usersInCalendar.forEach(function(user) { %>
+                    <% if (calendarOwner.username == currentUser.username) { -%>
+                        <li>
+                            <%= user.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= user.invited_id %>">x</button>
+                        </li>
+                    <% } else { %>
+                        <li>
+                            <%= user.username %>
+                        </li>
+                    <% } %>
+                    <!-- modal start -->
+                    <div class="modal" id="remove-user-form-<%= user.invited_id %>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+                                <p class="sub-title">Are you sure you want to remove <%= user.username %></p>
+                                <form action="/onlineoffice/calendarremove/<%= user.user_id %>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger" name="user_id" value="<%= user.invited_id %>">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal end -->
+                <% }) %>
+            </ul>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <p class="sub-title">Calendar's you were invited to:</p>
+            <ul class="list-style-none">
+                <li><a href="/onlineoffice/calendar/<%= currentUser.id %>">Back to your calendar</a></li>
+                <% if (invitedCalendars.length > 0) { %>
+                    <% invitedCalendars.forEach(function(calendar) { %>
+                        <li><a href="/onlineoffice/calendar/<%= calendar.user_id %>"><%= calendar.username %>'s calendar</a></li>
+                    <% }) %>
+                <% } else { %>
+                    <p>No other invited calendars</p>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <p class="small-text">Click dates below to add events</p>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div id="calendar"></div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <ul class="event-list">
+                <p class="sub-title">My Events</p>
+                <% if (events.length > 0) { %>
+                    <% for (var i = 0; i < events.length; i++) { 
+                        // Convert date format from YYYY-MM-DD to MM/DD/YYYY
+                        var eventDate = new Date(events[i].date);
+                        var formattedDate = (eventDate.getMonth() + 1) + '/' + eventDate.getDate() + '/' + eventDate.getFullYear();
+                    %>
+                        <form action="/onlineoffice/deleteevent/<%= events[i].id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger float-right">Delete</button>
+                        </form>
+                        <li>
+                            <%= events[i].title %>
+                            <span class="small-text">
+                                <%= formattedDate %>
+                                ( <%= events[i].start_time.replace(/([APap][Mm])/, ' $1') %> to <%= events[i].end_time.replace(/([APap][Mm])/, ' $1') %> )
+                            </span>
+                            <p>
+                                <%= events[i].description %>
+                            </p>
+                        </li>
+                        <br>
+                    <% } %>
+                <% } else { %>
+                    <li>You don't have any events! <br> Please select a date on the calendar to make an appointment.</li>
+                <% } %>
+            </ul>
+            <hr>
+            <ul class="calendar-tasks">
+                <p class="sub-title">Community Tasks</p>
+                <select id="community-task-filter">
+                    <option>Today</option>
+                    <option>Past 7 Days</option>
+                    <option>Past 30 Days</option>
+                    <option>Past 60 Days</option>
+                    <option>Past 90 Days</option>
+                    <option>Past Year</option>
+                </select>
+                <button id="filter-btn">Filter</button>
+                <% comTasks.reverse().forEach(function(task) { %>
+                    <% if (task.completed) { -%>
+                        <li class="display-none point-cursor com-tasks completed-task" id="<%= task.user_task_id %>" data-attribute="<%= task.date %>">
+                            <input type="checkbox" class="task-status" checked>
+                            <span class="task-dates"><%= task.date %></span>
+                            <span class="small-text"><%= task.name %> - <%= task.description %></span>
+                        </li>
+                    <% } else { -%>
+                        <li class="display-none point-cursor com-tasks" id="<%= task.user_task_id %>">
+                            <input type="checkbox" class="task-status">
+                            <span class="task-dates"><%= task.date %></span>
+                            <span class="small-text"><%= task.name %> - <%= task.description %></span>
+                        </li>
+                    <% } -%>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="add-event-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+            <form action="/onlineoffice/addevent" method="POST">
+                <h3>Add a New Event</h3>
+                <div class="form-group">
+                    <label for="date_selected">Date</label>
+                    <input type="date" id="date-selected" name="date_selected" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label for="start_time">Start Time</label>
+                            <select class="form-control" name="start_time">
+                                <option>06:00am</option>
+                                <option>06:30am</option>
+                                <option>07:00am</option>
+                                <option>07:30am</option>
+                                <option>08:00am</option>
+                                <option>08:30am</option>
+                                <option>09:00am</option>
+                                <option>09:30am</option>
+                                <option>10:00am</option>
+                                <option>10:30am</option>
+                                <option>11:00am</option>
+                                <option>11:30am</option>
+                                <option>12:00pm</option>
+                                <option>12:30pm</option>
+                                <option>01:00pm</option>
+                                <option>01:30pm</option>
+                                <option>02:00pm</option>
+                                <option>02:30pm</option>
+                                <option>03:00pm</option>
+                                <option>03:30pm</option>
+                                <option>04:00pm</option>
+                                <option>04:30pm</option>
+                                <option>05:00pm</option>
+                                <option>05:30pm</option>
+                                <option>06:00pm</option>
+                                <option>06:30pm</option>
+                                <option>07:00pm</option>
+                                <option>07:30pm</option>
+                                <option>08:00pm</option>
+                                <option>08:30pm</option>
+                                <option>09:00pm</option>
+                                <option>09:30pm</option>
+                                <option>10:00pm</option>
+                                <option>10:30pm</option>
+                                <option>11:00pm</option>
+                                <option>11:30pm</option>
+                                <option>12:00am</option>
+                                <option>12:30am</option>
+                                <option>01:00am</option>
+                                <option>01:30am</option>
+                                <option>02:00am</option>
+                                <option>02:30am</option>
+                                <option>03:00am</option>
+                                <option>03:30am</option>
+                                <option>04:00am</option>
+                                <option>04:30am</option>
+                                <option>05:00am</option>
+                                <option>05:30am</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label for="end_time">End Time</label>
+                            <select class="form-control" name="end_time">
+                                <option>06:00am</option>
+                                <option>06:30am</option>
+                                <option>07:00am</option>
+                                <option>07:30am</option>
+                                <option>08:00am</option>
+                                <option>08:30am</option>
+                                <option>09:00am</option>
+                                <option>09:30am</option>
+                                <option>10:00am</option>
+                                <option>10:30am</option>
+                                <option>11:00am</option>
+                                <option>11:30am</option>
+                                <option>12:00pm</option>
+                                <option>12:30pm</option>
+                                <option>01:00pm</option>
+                                <option>01:30pm</option>
+                                <option>02:00pm</option>
+                                <option>02:30pm</option>
+                                <option>03:00pm</option>
+                                <option>03:30pm</option>
+                                <option>04:00pm</option>
+                                <option>04:30pm</option>
+                                <option>05:00pm</option>
+                                <option>05:30pm</option>
+                                <option>06:00pm</option>
+                                <option>06:30pm</option>
+                                <option>07:00pm</option>
+                                <option>07:30pm</option>
+                                <option>08:00pm</option>
+                                <option>08:30pm</option>
+                                <option>09:00pm</option>
+                                <option>09:30pm</option>
+                                <option>10:00pm</option>
+                                <option>10:30pm</option>
+                                <option>11:00pm</option>
+                                <option>11:30pm</option>
+                                <option>12:00am</option>
+                                <option>12:30am</option>
+                                <option>01:00am</option>
+                                <option>01:30am</option>
+                                <option>02:00am</option>
+                                <option>02:30am</option>
+                                <option>03:00am</option>
+                                <option>03:30am</option>
+                                <option>04:00am</option>
+                                <option>04:30am</option>
+                                <option>05:00am</option>
+                                <option>05:30am</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea type="text" name="description" class="form-control"></textarea>
+                </div>
+                <button class="btn btn-success">Create Event</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+            <h3>Invite a user to view your calendar</h3>
+            <form action="/onlineoffice/calendarinvite/<%= currentUser.id %>" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control">
+                </div>
+                <button class="btn btn-success">Invite</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+<% include crm-partials/crmFooter %>
+
+<script>
+    // Add event listener to the calendar to set the date in the form
+    document.getElementById('calendar').addEventListener('click', function(event) {
+        var selectedDate = event.target.getAttribute('data-date');
+        if (selectedDate) {
+            document.getElementById('date-selected').value = selectedDate;
+        }
+    });
+</script>

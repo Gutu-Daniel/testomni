@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>OMNI Storage</title>
+  <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="/stylesheets/main.css">
+  <link rel="stylesheet" href="/stylesheets/storage.css">
+  <style>
+    .fixed-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .search-container {
+      padding: 20px 0;
+    }
+    
+    .search-form {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    #suggestions {
+      position: absolute;
+      width: 100%;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      background-color: white;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f8f9fa;
+    }
+    .container{
+      background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+color: white;
+padding: 10px;
+border-radius: 10px;
+    }
+    .navbar-collapse {
+    padding: 0 35px;
+    float: right;
+}
+  </style>
+</head>
+<body>
+  <div class="fixed-header">
+  <nav class="navbar navbar-default">
+    <div style="background: none; padding: 0; box-shadow: none;border: none;" class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">OMNI</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <p class="navbar-text">Welcome <%= currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) %></p>
+          <% if (currentUser.is_superAdmin) { %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Backoffice <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/opportunity/backoffice">Pages</a></li>
+                <li><a href="/opportunity/backoffice/createpage">Create Page</a></li>
+              </ul>
+            </li>
+          <% } %>
+          <li><a href="/opportunity/pages">Pages</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <!-- Start Flash message -->
+  <div class="container-fluid flash-msg">
+    <% if (error && error.length > 0) { -%>
+      <div class="alert alert-danger" role="alert">
+        <%= error -%>
+      </div>
+    <% } -%>
+    <% if (success && success.length > 0) { -%>
+      <div class="alert alert-success" role="alert">
+        <%= success -%>
+      </div>
+    <% } -%>
+  </div>
+  <!-- End Flash message-->
+
+
+         <!-- Search Container -->
+         <div class="search-container">
+          <div style="background: none; padding: 0; box-shadow: none;border: none;" class="container">
+            <form action="/search" method="POST" class="search-form">
+              <div class="input-group">
+                <input type="text" name="key" class="form-control" placeholder="Search apps..." id="searchInput" autocomplete="off">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+              <div id="suggestions" class="d-none"></div>
+            </form>
+          </div>
+        </div>
+  </div>s
+        <script>
+          const searchInput = document.getElementById('searchInput');
+          const suggestionsDiv = document.getElementById('suggestions');
+          let debounceTimer;
+      
+          searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
+            const searchTerm = e.target.value;
+            
+            if (searchTerm.length < 2) {
+              suggestionsDiv.classList.add('d-none');
+              return;
+            }
+      
+            debounceTimer = setTimeout(() => {
+              fetch(`/suggestions?key=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(suggestions => {
+                  if (suggestions.length > 0) {
+                    suggestionsDiv.innerHTML = suggestions
+                      .map(suggestion => `
+                        <div class="suggestion-item" 
+                             onclick="selectSuggestion('${suggestion}')">
+                          ${suggestion}
+                        </div>
+                      `).join('');
+                    suggestionsDiv.classList.remove('d-none');
+                  } else {
+                    suggestionsDiv.classList.add('d-none');
+                  }
+                });
+            }, 300);
+          });
+      
+          function selectSuggestion(suggestion) {
+            searchInput.value = suggestion;
+            suggestionsDiv.classList.add('d-none');
+            // Submit the form when a suggestion is selected
+            searchInput.closest('form').submit();
+          }
+      
+          // Close suggestions when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+              suggestionsDiv.classList.add('d-none');
+            }
+          });
+        </script>

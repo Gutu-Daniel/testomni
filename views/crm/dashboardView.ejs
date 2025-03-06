@@ -1,0 +1,104 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+  <hr>
+
+  <div class="content">
+    <p id="title">Dashboard</p>
+
+    <div class="row dashboard">
+      <div class="col-sm-5 col-md-5">
+        <div id="task">
+          <p class="sub-title">My Tasks</p>
+
+
+          <% if (tasks.length > 0) { %>
+          <ul class="task-list">
+            <% for (var i=0;i<tasks.length;i++) { %>
+            <hr>
+            <div class="task">
+              <form action="/onlineoffice/deletetask/<%= tasks[i].id %>?_method=DELETE" method="POST">
+              </form>
+              <p><input type="checkbox" disabled class="task-status"> <%= tasks[i].title %> <span class="small-text">added: <%= tasks[i].date_time %></span></p>
+              <li class="task-list-description"><%= tasks[i].description%></li>
+            </div>
+            <% } %>
+          </ul>
+          <% } else { %>
+          <p>You don't have any tasks.</p>
+          <% } %>
+        </div>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Organization</p>
+        <ol>
+          <% orgs.forEach(function(org) { %>
+          <li><%= org.name %></li>
+          <% }) %>
+          <% if (orgs.length < 1) { %>
+          <li>Empty</li>
+          <% } %>
+        </ol>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Contacts</p>
+        <ul>
+          <% contacts.forEach(function(contact) { %>
+          <li><%= contact.name %></li>
+          <% }) %>
+          <% if (contacts.length < 1) { %>
+          <li>Contacts are empty</li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Appointments</p>
+        <ul>
+          <% events.forEach(function(event) { %>
+          <li><%= event.name %></li>
+          <% }) %>
+          <% if (events.length < 1) { %>
+          <li>No appointments</li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Pipelines</p>
+        <ul>
+          <% pipelines.forEach(function(pipeline) { %>
+          <li><%= pipeline.title %></li>
+          <% }) %>
+          <% if (pipelines.length < 1) { %>
+          <li>No pipelines</li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">My Messages</p>
+        <ul>
+          <% messages.forEach(function(message) { %>
+          <li><%= message.username %>: <span class="small-text"><%= message.message %></span></li>
+          <% }) %>
+          <% if (messages.length < 1) { %>
+          <li>No messages</li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-5">
+        <p class="sub-title">Today's Community Tasks</p>
+        <ul>
+          <% comTasks.reverse().forEach(function(task) { %>
+          <% if (task.completed) { %>
+          <li class="point-cursor com-tasks completed-task" id="<%= task.user_tasks_id %>" data-attribute="<%= task.date %>"><input type="checkbox" disabled class="task-status" checked> <span class="task-dates"><%= task.date %></span> <span class="small-text"><%= task.name %> - <%= task.description %></span></li>
+          <% } else { %>
+          <li class="point-cursor com-tasks" id="<%= task.user_tasks_id %>"><input type="checkbox" disabled class="task-status"> <span class="task-dates"><%= task.date %></span> <span class="small-text"><%= task.name %> - <%= task.description %></span></li>
+          <% } %>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include crm-partials/crmFooter %>

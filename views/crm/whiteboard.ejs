@@ -1,0 +1,83 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+</div>
+<div class="whiteboard">
+  <div class="tools-login">
+    <div class="colors">
+      <div class="color white"></i></div>
+      <div class="color black"></div>
+      <div class="color red"></div>
+      <div class="color green"></div>
+      <div class="color blue"></div>
+      <div class="color yellow"></div>
+    </div>
+    <div class="size">
+      <label>Brush Size:</label>
+      <input type="number" id="size" min="1" max="30" placeholder="1 - 30 (default 3)">
+    </div>
+
+  </div>
+
+  <div class="container">
+    <a href="javascript:toggleInvite()" class="btn btn-default btn-xs" style="float: right;"><i class="fa fa-user" aria-hidden="true"></i> Users</a>
+    <div class="usersSection" style="display: none; margin-top: 15px;">
+      <p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+
+      <% if(whiteboardInvitations.length){ %>
+      <h4>Invites</h4>
+      <ul>
+        <% whiteboardInvitations.forEach(function(t, i) { %>
+        <li><%= t.username %> <a class="text-small btn btn-xs btn-default" href="/onlineoffice/viewWhiteboard/<%= t.id %>" title="View"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+        <% }) %>
+      </ul>
+      <% } %>
+
+      <% if(whiteboardInvited.length){ %>
+      <h4>Invited</h4>
+      <ul>
+        <% whiteboardInvited.forEach(function(t, i) { %>
+        <li><%= t.username %></li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </div>
+  </div>
+
+  <canvas id="myCanvas">Sorry, your browser does not support HTML5 canvas technology.</canvas>
+</div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <!-- <div id="meet"></div> -->
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+</div>
+
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+      <h3>Invite a user to your task grid</h3>
+      <form action="/onlineoffice/whiteboardInvite" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" class="form-control">
+        </div>
+        <button class="btn btn-success">Invite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+<% include crm-partials/crmFooter %>

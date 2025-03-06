@@ -1,0 +1,16 @@
+.storage {
+	margin: 2% auto;
+}
+.start-page {
+	margin-top: 8%;
+	width: 50%;
+	text-align: center;
+}
+.start-page input {
+  margin: 0 auto;
+  width: 30%;
+}
+.storage-files {
+	width: 200px;
+	height: 200px;
+}

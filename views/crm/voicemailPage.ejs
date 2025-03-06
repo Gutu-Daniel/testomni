@@ -1,0 +1,168 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container storage">
+	<% include crm-partials/navTabs %>
+	<hr>
+	<p class="title"><%= voicemailInfo[0].first_name.charAt(0).toUpperCase() + voicemailInfo[0].first_name.slice(1) %>'s Voicemail</p>
+	<div>
+		<% if (isLeader) { %>
+			<p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+		<% } %>
+		
+		<div>
+			<p>Current Users</p>
+			<ul>
+				<li><%= voicemailInfo[0].username %> <span class="small-text">owner</span></li>
+				<% usersInVoicemail.forEach(function(user) { %>
+					<% if (voicemailInfo[0].owner_id == currentUser.id) { -%>
+						<li><%= user.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= user.user_id%>">x</button></li>
+					<% } else { -%>
+						<li><%= user.username %></li>
+					<% } -%>
+					<!-- modal start -->
+					<div class="modal" id="remove-user-form-<%= user.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+					  	<div class="modal-content">
+					  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+								<p class="sub-title">Are you sure you want to remove <%= user.username %></p>
+					  		<form action="/onlineoffice/voicemail/<%= user.user_id %>/removeUser/<%= voicemailInfo[0].voicemail_id %>?_method=DELETE" method="POST">
+						  		<button class="btn btn-danger" name="user_id" value="<%= user.user_id %>">Remove</button>
+						  	</form>
+							</div>
+						</div>
+					</div>
+					<!-- modal end -->
+				<% }) %>
+			</ul>
+		</div>
+
+		<hr>
+		<% if (isLeader) { %>
+			<p class="point-cursor" data-toggle="modal" data-target="#create-folder-form"><i class="fa fa-plus-circle"></i> Create Folder</p>
+		<% } %>
+		<p class="sub-title">Folders</p>
+		<div class="row">
+			<% folders.forEach(function(folder) { %>
+				<% if (folder.user_id === currentUser.id) { -%>
+					<div class="col-xs-3 col-sm-2 col-md-2">
+						<a href="/onlineoffice/voicemail/<%= voicemailInfo[0].voicemail_id %>/folder/<%= folder.folder_id %>">
+							<div class="smaller-circle">
+								<p><%= folder.title %></p>
+							</div>
+						</a>
+					</div>
+				<% } %>
+			<% }) %>
+		</div>
+		<hr>
+
+		<div class="row">
+			<div class="col-sm-8 col-md-8">
+				<p class="sub-title">Files</p>
+				<% if (isLeader) { %>
+					<p class="point-cursor" data-toggle="modal" data-target="#upload-file-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Upload File</p>
+				<% } %>
+				<% voicemailInfo.reverse().forEach(function(file) { %>
+					<% if (file.file) { -%>
+						<div>
+						<!-- 	<audio controls>
+								<source src="/crm/voicemail/<%= file.file %>" type="audio/mp3"></source>
+							</audio> -->
+							<p class="small-text"> <%= file.file %> : <%= file.date %> - <%= file.time %></p>
+							<video class="voicemail-files" controls>
+							  <source src="/crm/voicemail/<%= file.file %>" type="video/mp4">
+							</video>
+							<span class="sub-title point-cursor" data-toggle="modal" data-target="#delete-voicemail-form-<%= file.id%>"><i class="fa fa-close"></i></span>
+						</div>
+						<!-- modal start -->
+						<div class="modal" id="delete-voicemail-form-<%= file.id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+						  	<div class="modal-content">
+						  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+						  		<p class="sub-title">Are you sure you want to delete <span class="small-text"><%= file.file %></span>?</p>
+						  		<form action="/onlineoffice/voicemail/<%= voicemailInfo[0].voicemail_id%>/delete/<%= file.id%>?_method=DELETE" method="POST" >
+										<div class="form-group">
+							  			<button class="btn btn-danger">Delete</button>
+							  		</div>
+							  	</form>
+								</div>
+							</div>
+						</div>
+						<!-- modal end -->
+					<% } else { -%>
+						<p>No files</p>
+					<% } -%>
+				<% }) %>
+			</div>
+			<div class="col-sm-4 col-md-4">
+				<p class="sub-title">Voicemail Navigation:</p>
+				<ul class="list-style-none">
+					<li><a href="/onlineoffice/voicemail/<%= currentUser.id %>">Your Voicemail</a></li>
+					<% if (invitedVoicemail.length > 0) { %>
+						<% invitedVoicemail.forEach(function(voicemail) { %>
+								<li><a href="/onlineoffice/voicemail/<%= voicemail.owner_id %>"><%= voicemail.username%>'s voicemail</a></li>
+						<% })%>
+					<% } else { %>
+						<p>No other invited Voicemails</p>
+					<% } %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Invite a user to <%= voicemailInfo[0].first_name.charAt(0).toUpperCase() + voicemailInfo[0].first_name.slice(1) %>'s Voicemails</h3>
+  		<form action="/onlineoffice/voicemail/<%= currentUser.id %>/invite/<%= voicemailInfo[0].voicemail_id %>" method="POST">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Invite</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+
+<!-- modal start -->
+<div class="modal" id="upload-file-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Upload file to <%= voicemailInfo[0].first_name.charAt(0).toUpperCase() + voicemailInfo[0].first_name.slice(1) %>'s Voicemails</h3>
+  		<form action="/onlineoffice/voicemail/<%= currentUser.id %>/upload/<%= voicemailInfo[0].voicemail_id %>" method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<input type="file" name="file" id="file">
+				</div>
+	  		<button class="btn btn-success">Upload</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="create-folder-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>New Folder</h3>
+  		<form action="/onlineoffice/voicemail/<%= voicemailInfo[0].voicemail_id%>/createfolder/<%= voicemailInfo[0].owner_id %>" method="POST">
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="title" class="form-control">
+				</div>
+	  		<button class="btn btn-success margin-0-auto">Create</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

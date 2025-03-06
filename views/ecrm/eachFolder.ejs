@@ -1,0 +1,122 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include ecrm-partials/navTabs %>
+	<hr>
+	<a href="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>" class="float-right"> << Return to pipeline</a>
+	<p id="title"><%= folder[0].title %></p>
+	<% if (isLeader) { %>
+		<form action="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>/folder/<%= folder[0].id %>?_method=DELETE" method="POST">
+			<button class="btn btn-danger btn-sm float-right" >Delete folder</button>
+		</form>
+	<% } %>
+	<% if (isLeader || isSubLeader) { %>
+		<p class="point-cursor" data-toggle="modal" data-target="#invite-users-form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Invite users</p>
+	<% } %>
+	<div>
+		<p>Current Users in folder</p>
+		<ul>
+			<% folder.forEach(function(f, i) { -%>
+				<% if (i !== 0) { -%>
+					<% if (isLeader) { -%>
+						<li><%= f.username %> - <button class="btn btn-default" data-toggle="modal" data-target="#remove-user-form-<%= f.user_id%>">x</button></li>
+					<% } else { %>
+						<li><%= f.username %></li>
+					<% } %>
+					<!-- modal start -->
+					<div class="modal" id="remove-user-form-<%= f.user_id%>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+					  	<div class="modal-content">
+					  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+								<p class="sub-title">Are you sure you want to remove <%= f.username %></p>
+					  		<form action="/office/project/<%= project_id %>/pipeline/<%= f.pipeline_id%>/folder/<%= f.folder_id %>/remove?_method=DELETE" method="POST">
+						  		<button class="btn btn-danger" name="user_id" value="<%= f.user_id %>">Remove</button>
+						  	</form>
+							</div>
+						</div>
+					</div>
+					<!-- modal end -->
+				<% } else { -%>
+					<li><%= f.username %> - <span class="small-text">owner</span></li>
+				<% } -%>
+			<% }) -%>
+		</ul>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<div class="folder-notes">
+				<h4>Notes</h4>
+				<hr>
+				<div class="wall">
+					<form action="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>/folder/<%= folder[0].folder_id %>/addnote" method="POST">
+						<div class="form-group">
+							<input type="text" class="form-control" name="note" placeholder="Make a note" required>
+						</div>
+					</form>
+					<% for (var i=notes.length-1;i>=0;i--) { %>
+						<div class="each-post">
+							<form action="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>/folder/<%= folder[0].folder_id %>/deletenote/<%= notes[i].id %>?_method=DELETE" method="POST">
+								<button class="btn btn-xs btn-danger float-right">Delete</button>
+							</form>
+							<strong><%= notes[i].username %>: </strong><%= notes[i].post %>
+						</div>
+						<hr>
+					<% } %>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<div class="pipeline-uploads">
+				<form action="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>/folder/<%= folder[0].folder_id %>/uploadfile" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<input type="file" name="file" id="file">
+						<input class="btn btn-primary" type="submit" value="Upload">
+					</div>
+				</form>
+			</div>
+			<% for (var i=0;i<uploads.length;i++) { %>
+				<embed src="/ecrm/uploads/<%= uploads[i].file_name %>" type="application/pdf">
+			<% } %>
+		</div>
+	</div>
+	
+</div>
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Invite a user to folder <%= folder[0].title %></h3>
+  		<form action="/office/project/<%= project_id %>/pipeline/<%= folder[0].pipeline_id %>/folder/<%= folder[0].id %>/invite" method="POST">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Invite</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<!-- modal start -->
+<div class="modal" id="add-folder-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+  		<h3>Create a New Folder</h3>
+  		<form action="/office/folder/<%= folder[0].id %>/createfolder" method="POST">
+				<div class="form-group">
+					<label for="title">Name</label>
+					<input type="text" name="title" class="form-control">
+				</div>
+	  		<button class="btn btn-success">Create Folder</button>
+	  	</form>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include ecrm-partials/ecrmFooter %>

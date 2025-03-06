@@ -1,0 +1,64 @@
+<% include ./backoffice-partials/header.ejs %>
+
+<div id="wrapper">
+	<% include ./backoffice-partials/tabs.ejs %>
+
+	<div style="margin-top: 140px;" class="container">
+		<p class="title">Site Setup</p>
+		<p class="sub-title">Setup Page</p>
+		<form action="/backoffice/setup?_method=PUT" method="POST">
+			<div class="form-group">
+				<label for="title">Title:</label>
+				<input class="form-control" type="text" name="title" value="<%= setupText.title ? setupText.title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="secondary_title">Secondary Title:</label>
+				<input class="form-control" type="text" name="secondary_title" value="<%= setupText.secondary_title ? setupText.secondary_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="steps_summary">Summary of the steps</label>
+				<textarea class="form-control" name="steps_summary"><%= setupText.steps_summary ? setupText.steps_summary : '' %></textarea>
+			</div>
+			<!-- STEPS -->
+			<!-- STEP 1 -->
+			<div class="form-group">
+				<label for="step1_title">Step 1 Title:</label>
+				<input class="form-control" type="text" name="step1_title" value="<%= setupText.step1_title ? setupText.step1_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="step1_description">Step 1 Description:</label>
+				<textarea class="form-control" type="text" name="step1_description"><%= setupText.step1_description ? setupText.step1_description : '' %></textarea>
+			</div>
+			<!-- STEP 2 -->
+			<div class="form-group">
+				<label for="step2_title">Step 2 Title:</label>
+				<input class="form-control" type="text" name="step2_title" value="<%= setupText.step2_title ? setupText.step2_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="step2_description">Step 2 Description:</label>
+				<textarea class="form-control" type="text" name="step2_description"><%= setupText.step2_description ? setupText.step2_description : '' %></textarea>
+			</div>
+			<!-- STEP 3 -->
+			<div class="form-group">
+				<label for="step3_title">Step 3 Title:</label>
+				<input class="form-control" type="text" name="step3_title" value="<%= setupText.step3_title ? setupText.step3_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="step3_description">Step 3 Description:</label>
+				<textarea class="form-control" type="text" name="step3_description"><%= setupText.step3_description ? setupText.step3_description : '' %></textarea>
+			</div>
+			<!-- STEP 4 -->
+			<div class="form-group">
+				<label for="step4_title">Step 4 Title:</label>
+				<input class="form-control" type="text" name="step4_title" value="<%= setupText.step4_title ? setupText.step4_title : '' %>">
+			</div>
+			<div class="form-group">
+				<label for="step4_description">Step 4 Description:</label>
+				<textarea class="form-control" type="text" name="step4_description"><%= setupText.step4_description ? setupText.step4_description : '' %></textarea>
+			</div>
+			<button class="btn btn-primary">Save</button>
+		</form>
+	</div>
+</div>
+
+<% include ./backoffice-partials/footer.ejs %>

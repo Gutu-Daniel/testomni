@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Register User</title>
+	<link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="/stylesheets/main.css">
+	<style>
+		/* Optional: Add some custom styles */
+		.terms-error {
+			color: red;
+			display: none; /* Hidden by default */
+		}
+	</style>
+</head>
+<body>
+	<div class="signup-form container">
+		<h2>Register</h2>
+		<div class="flash-msg">
+			<% if (error && error.length > 0) { %>
+				<div class="alert alert-danger" role="alert">
+					<%= error %>
+				</div>
+			<% } %>
+			<% if (success && success.length > 0) { %>
+				<div class="alert alert-success" role="alert">
+					<%= success %>
+				</div>
+			<% } %>
+		</div>
+		<form id="signupForm" action="<%= signupUrl%>" method="POST" onsubmit="return validateForm()">
+			<div class="form-group">
+				<input type="text" class="form-control" name="first_name" placeholder="First Name" required onInvalid="this.setCustomValidity('Please enter your first name')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="last_name" placeholder="Last Name" required onInvalid="this.setCustomValidity('Please enter your last name')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="email" placeholder="Email Address" required onInvalid="this.setCustomValidity('Please enter your email')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" name="username" placeholder="Username" required onInvalid="this.setCustomValidity('Please enter a username')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" name="password" placeholder="Password" required onInvalid="this.setCustomValidity('Please enter a password')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" name="password2" placeholder="Password (repeat)" required onInvalid="this.setCustomValidity('Please confirm password')" oninput="setCustomValidity('')">
+			</div>
+			<div class="form-group">
+				<label>
+					<input type="checkbox" id="termsCheckbox" required>
+					I agree to the <a href="https://siromni.com/terms-and-conditions">Terms and Conditions</a> And <a href="https://siromni.com/privacy-and-policy">Privacy and Policy</a>
+				</label>
+				<div class="terms-error" id="termsError">You must agree to the terms and conditions.</div>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-default" value="Sign up and Log in">
+			</div>
+		</form>
+	</div>
+
+	<script>
+		function validateForm() {
+			const termsCheckbox = document.getElementById('termsCheckbox');
+			const termsError = document.getElementById('termsError');
+
+			if (!termsCheckbox.checked) {
+				termsError.style.display = 'block';
+				return false; // Prevent form submission
+			} else {
+				termsError.style.display = 'none'; // Hide error message
+			}
+			return true; // Allow form submission
+		}
+	</script>
+</body>
+</html>

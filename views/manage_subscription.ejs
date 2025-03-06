@@ -1,0 +1,41 @@
+<% include backoffice/backoffice-partials/header.ejs %>
+<style>
+  
+</style>
+<div id="wrapper">
+
+	<div style="  margin-top: 140px;" class="container">
+<div class="row">
+<div class="col-md-6">
+<p class="title">Subscription</p>
+</div>
+<div class="col-md-6">
+ <a href="/add-subscription" class="btn btn-primary">Add New Subscription</a>
+</div>
+    </div>
+		<table class="table table-striped">
+    <thead>
+      <tr style="background-color: transparent;">
+        <th>Id</th>
+        <th>Plan</th>
+        <th>Duration</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% apps.forEach(function(sub) { %>
+      <tr>
+        <td><%= sub.id %></td>
+        <td><%= sub.plan %></td>
+        <td><%= sub.duration %></td>
+        <td>$<%= sub.price %></td>
+        <td><a href="edit-subscription/<%= sub.id %>" class="btn btn-primary">Edit</a></td>
+      </tr>
+     <% }) %>
+    </tbody>
+  </table>
+	</div>
+</div>
+
+<% include backoffice/backoffice-partials/footer.ejs %>

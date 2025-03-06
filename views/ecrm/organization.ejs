@@ -1,0 +1,95 @@
+<% include ecrm-partials/ecrmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+	<% include ecrm-partials/navTabs %>
+	<hr>
+	<p class="point-cursor float-right" data-toggle="modal" data-target="#add-contact-to-org-form"><i class="fa fa-users" aria-hidden="true"></i> Add contact to Organization</p>
+	<p id="title">My Organization</p>
+
+	<ul class="full-list">
+		<% if (allOrg.length > 0) { %>
+			<% for (var i=0; i<allOrg.length;i++) { %>
+				<li class="each-list">
+					<div class="row">
+						<div class="col-md-5">
+							<a href="/office/contact/<%= allOrg[i].id %>"><h4><%= allOrg[i].name %></h4></a>
+							<div>
+								<%= allOrg[i].company_title %> at <%= allOrg[i].company_name %>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<h4><%= allOrg[i].email %></h4>
+							<div>
+								<%= allOrg[i].phone %>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<p><%= allOrg[i].position %></p>
+							<h5><span class="each-contact-status"><%= allOrg[i].status %></span> <%= allOrg[i].priority %></h5>
+						</div>
+					</div>
+				</li>
+			<% } %>
+		<% } else { %>
+			<p>Your organization is empty</p>
+		<% } %>
+	</ul>
+</div>
+
+<!-- modal start -->
+<div class="modal" id="add-contact-to-org-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+  	<div class="modal-content">
+  		<button class="btn btn-danger btn-sm" id="close-modal-form" data-dismiss="modal">Close</button>
+  		<p class="sub-title">Add contact to Organization</p>
+	  	<% if (allContacts.length > 0) { %>
+	  		<form action="/office/addorganization" method="POST">
+	  			<div class="row">
+	  				<div class="col-sm-6 col-md-6">
+	  					<div class="form-group">
+			  				<select class="selectpicker" name="contacts">
+						  		<% for (var i=0;i<allContacts.length;i++) { %>
+						  			<option><%= allContacts[i].name %></option>
+						  		<% } %>
+					  		</select>
+			  			</div>
+	  				</div>
+	  				<div class="col-sm-6 col-md-6">
+	  					<div class="form-group">
+				  			<select class="selectpicker" id="select-category">
+					  			<option>Shareholders</option>
+					  			<option>Headquarters</option>
+					  			<option>Executive Office</option>
+					  			<option>Office</option>
+					  			<option>Department VP</option>
+					  			<option>Branch Management</option>
+					  			<option>Local Office</option>
+					  			<option>Business Development</option>
+					  			<option>Miscellaneous</option>
+					  		</select>
+				  		</div>
+
+					  	<div class="form-group position hq">
+					  		<select id="select-position" name="position">
+				  				<option>Owner</option>
+					  			<option>Chairman Of the Board</option>
+					  			<option>Secretary</option>
+					  			<option>Board Member</option>
+					  		</select>
+					  	</div>
+					  
+	  				</div>
+	  			</div>
+		  		<div class="form-group">
+		  			<button class="btn btn-success">Add to Org</button>
+		  		</div>
+		  	</form>
+		  <% } else { %>
+		  	<p class="small-text">You don't have any contacts to add to Organization</p>
+		  <% } %>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
+
+<% include ecrm-partials/ecrmFooter %>

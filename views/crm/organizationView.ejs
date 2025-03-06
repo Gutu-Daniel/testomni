@@ -1,0 +1,75 @@
+<% include crm-partials/crmHeader %>
+
+<div style="margin-top: 140px;" class="container crm page">
+  <% include crm-partials/navTabs %>
+  <hr>
+  <p id="title">Organization</p>
+
+  <p id="message"><%= viewUserInfo[0].first_name.charAt(0).toUpperCase() + viewUserInfo[0].first_name.slice(1) %>'s Team</p>
+  <p class="small-text">**Instruction** <br> click + to add name<br> click on name to edit</p>
+  <div class="row">
+    <div>
+      <div class="largest-circle org member">
+        <p class="sub-title">My Organization</p>
+        <% var classes = ["one", "two", "three", "four", "five", "six"] %>
+        <% for (var i=0;i<org.length;i++) { %>
+        <div class="col-xs-4 col-sm-4 col-md-4">
+          <div class="inner-circle <%= classes[i] %> dl <%= org[i].org_id %>">
+            <p><%= org[i].name %></p>
+          </div>
+        </div>
+        <% } %>
+        <% if (org.length === 6) { %>
+        <div class="inner-circle seven">
+          <p>FULL</p>
+        </div>
+        <% } else { %>
+        <div class="inner-circle seven" style="visibility: hidden;">
+          <p><i class="fa fa-plus"></i></p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <form id="create-downline" action="/onlineoffice/organization" method="POST">
+        <p class="sub-title">Add Downline</p>
+        <div class="form-group">
+          <label for="downline_name">Name</label>
+          <input class="form-control" type="text" name="downline_name">
+        </div>
+        <button class="btn btn-default">Add</button>
+      </form>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <form id="edit-downline" action="/onlineoffice/organization/?_method=PUT" method="POST">
+        <p class="sub-title">Edit Downline</p>
+        <div class="form-group">
+          <label for="downline_name">Name</label>
+          <input class="form-control" id="edit-downline-name" type="text" name="downline_name" value="<% org %>">
+        </div>
+        <button class="btn btn-default">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal start -->
+<div class="modal" id="invite-users-form" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <button class="btn btn-danger btn-sm close-modal-form" data-dismiss="modal">Close</button>
+      <h3>Invite a user to your task grid</h3>
+      <form action="/onlineoffice/organizationInvite" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" class="form-control">
+        </div>
+        <button class="btn btn-success">Invite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+<% include crm-partials/crmFooter %>

@@ -1,0 +1,28 @@
+<div class="profile-section">
+  <div class="align-center" style="width: 70%; position: relative; margin: 0 auto;">
+    <div class="wall-img-wrapper">
+      <div class="wall-img-outer">
+        <% if (userInfo[0].wall_img) { %>
+        <img class="wall-img" src="/images/wall-imgs/<%= userInfo[0].wall_img %>" alt="wall image">
+        <% } else { %>
+        <img class="wall-img" src="/images/wall-imgs/silver-wall.jpg" alt="wall image">
+        <% } %>
+      </div>
+    </div>
+
+    <div class="profile-img-wrapper">
+      <div class="profile-img-outer">
+        <% if (userInfo[0].profile_img) { %>
+        <% if (userInfo[0].profile_img_status == 6) { %>
+        <img class="profile-img" id="rotate" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+        <% } else { %>
+        <img class="profile-img" src="/images/profile-imgs/<%= userInfo[0].profile_img %>" alt="profile image">
+        <% } %>
+        <% } else { %>
+        <img class="profile-img" src="/images/profile-imgs/default-profile.jpg %>" alt="profile image">
+        <% } %>
+      </div>
+    </div>
+    </p>
+  </div>
+</div>
